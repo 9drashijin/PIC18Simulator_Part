@@ -5,7 +5,7 @@
 void setUp() {}
 void tearDown() {}
 
-void test_meedling_around_with_some_text_ficture() {
+void test_the_fucntion_of_MOVLW_should_Move_Literal_to_WREG() {
   // Test fixture
   Instruction inst = {
                       .mnemonic = MOVLW,
@@ -22,7 +22,7 @@ void test_meedling_around_with_some_text_ficture() {
 
   // Unit test
   TEST_ASSERT_EQUAL(0x5A, FSR[WREG]);		
-  TEST_ASSERT_EQUAL_HEX8(0x5A, FSR[WREG]);	
+  TEST_ASSERT_EQUAL_HEX8(0x5A, FSR[WREG]);
   
   TEST_ASSERT_EQUAL(-1, code.operand2);
   TEST_ASSERT_EQUAL(-1, code.operand3);
