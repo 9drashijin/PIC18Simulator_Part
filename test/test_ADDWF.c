@@ -15,7 +15,7 @@ void test_the_fucntion_of_ADDWF_should_Add_WREG_and_FileReg_STORE_in_WREG() {
   Bytecode code = { .instruction = &inst,
                     .operand1 = 0x5A,	// Add WREG to File register. W to "f".	
                     .operand2 =	0, 		// 0 = stored in WREG , 1 = stored back in register "f".
-                    .operand3 = 1, 		// 0 = Access Bank is Selected,\
+                    .operand3 = 0, 		// 0 = Access Bank is Selected, BSR ignored\
 										   1 = BSR is used to select the GPR bank (default).		
                   };
 	
@@ -28,12 +28,12 @@ void test_the_fucntion_of_ADDWF_should_Add_WREG_and_FileReg_STORE_in_WREG() {
   TEST_ASSERT_EQUAL_HEX8(0xD9, FSR[WREG]);
   
   // 2nd test value
-  FSR[code.operand1] = 5;
-  FSR[WREG]= 3;
+  FSR[code.operand1] = 0b01;
+  FSR[WREG]			 = 0b10;
   //printf("FSR[code.operand1] :%d	FSR[WREG] :%d\n",FSR[code.operand1],FSR[WREG]);
   addwf(&code);
   //printf("FSR[code.operand1] :%d	FSR[WREG] :%d\n",FSR[code.operand1],FSR[WREG]);
-  TEST_ASSERT_EQUAL(8, FSR[WREG]);
+  TEST_ASSERT_EQUAL(0b11, FSR[WREG]);
   TEST_ASSERT_EQUAL_STRING("addwf",inst.name);
   
 }
@@ -47,7 +47,7 @@ void test_the_fucntion_of_ADDWF_should_Add_WREG_and_FileReg_STORE_in_FileREG() {
   Bytecode code = { .instruction = &inst,
                     .operand1 = 0x5A,	// Add WREG to File register. W to "f".	
                     .operand2 =	1, 		// 0 = stored in WREG , 1 = stored back in register "f".
-                    .operand3 = 1, 		// 0 = Access Bank is Selected,\
+                    .operand3 = 0, 		// 0 = Access Bank is Selected, BSR ignored\
 										   1 = BSR is used to select the GPR bank (default).		
                   };
 	
