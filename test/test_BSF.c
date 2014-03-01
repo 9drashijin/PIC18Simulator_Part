@@ -24,7 +24,7 @@ void test_the_BSF_should_set_the_first_bit_to_1(){
   bsf(&code);
   //printf("FSR[code.operand1] :%d\n",FSR[code.operand1]);
   //printf("FSR[code.operand2] :%d\n",FSR[code.operand2]);
-  TEST_ASSERT_EQUAL(0b00000001, FSR[code.operand2]);
+  TEST_ASSERT_EQUAL(0b00000001, FSR[code.operand2]);		//ADDRESS at 0x6C with bit 0000 0001
   TEST_ASSERT_EQUAL(108, FSR[code.operand1]);
   TEST_ASSERT_EQUAL_HEX8(0x6c, FSR[code.operand1]);
 }
@@ -46,7 +46,7 @@ void test_the_BSF_should_set_the_second_bit_to_1(){
   bsf(&code);
   //printf("FSR[code.operand1] :%d\n",FSR[code.operand1]);
   //printf("FSR[code.operand2] :%d\n",FSR[code.operand2]);
-  TEST_ASSERT_EQUAL(0b00000010, FSR[code.operand2]);
+  TEST_ASSERT_EQUAL(0b00000010, FSR[code.operand2]);		//ADDRESS at 0x6C with bit 0000 0010
   TEST_ASSERT_EQUAL(108, FSR[code.operand1]);
   TEST_ASSERT_EQUAL_HEX8(0x6c, FSR[code.operand1]);
 }
@@ -68,7 +68,7 @@ void test_the_BSF_should_set_the_Third_bit_to_1(){
   bsf(&code);
   //printf("FSR[code.operand1] :%d\n",FSR[code.operand1]);
   //printf("FSR[code.operand2] :%d\n",FSR[code.operand2]);
-  TEST_ASSERT_EQUAL(0b00000100, FSR[code.operand2]);
+  TEST_ASSERT_EQUAL(0b00000100, FSR[code.operand2]);		//ADDRESS at 0x6C with bit 0000 0100
   TEST_ASSERT_EQUAL(108, FSR[code.operand1]);
   TEST_ASSERT_EQUAL_HEX8(0x6c, FSR[code.operand1]);
 }
@@ -90,7 +90,7 @@ void test_the_BSF_should_set_the_fourth_bit_to_1(){
   bsf(&code);
   //printf("FSR[code.operand1] :%d\n",FSR[code.operand1]);
   //printf("FSR[code.operand2] :%d\n",FSR[code.operand2]);
-  TEST_ASSERT_EQUAL(0b00001000, FSR[code.operand2]);
+  TEST_ASSERT_EQUAL(0b00001000, FSR[code.operand2]);		//ADDRESS at 0x6C with bit 0000 1000
   TEST_ASSERT_EQUAL(108, FSR[code.operand1]);
   TEST_ASSERT_EQUAL_HEX8(0x6c, FSR[code.operand1]);
 }
@@ -112,7 +112,7 @@ void test_the_BSF_should_set_the_fifth_bit_to_1(){
   bsf(&code);
   //printf("FSR[code.operand1] :%d\n",FSR[code.operand1]);
   //printf("FSR[code.operand2] :%d\n",FSR[code.operand2]);
-  TEST_ASSERT_EQUAL(0b00010000, FSR[code.operand2]);
+  TEST_ASSERT_EQUAL(0b00010000, FSR[code.operand2]);		//ADDRESS at 0x6C with bit 0001 0000
   TEST_ASSERT_EQUAL(108, FSR[code.operand1]);
   TEST_ASSERT_EQUAL_HEX8(0x6c, FSR[code.operand1]);
   
@@ -135,7 +135,7 @@ void test_the_BSF_should_set_the_sixth_bit_to_1(){
   bsf(&code);
   //printf("FSR[code.operand1] :%d\n",FSR[code.operand1]);
   //printf("FSR[code.operand2] :%d\n",FSR[code.operand2]);
-  TEST_ASSERT_EQUAL(0b00100000, FSR[code.operand2]);
+  TEST_ASSERT_EQUAL(0b00100000, FSR[code.operand2]);		//ADDRESS at 0x6C with bit 0010 0000
   TEST_ASSERT_EQUAL(108, FSR[code.operand1]);
   TEST_ASSERT_EQUAL_HEX8(0x6c, FSR[code.operand1]);
 }
@@ -157,7 +157,7 @@ void test_the_BSF_should_set_the_seventh_bit_to_1(){
   bsf(&code);
   //printf("FSR[code.operand1] :%d\n",FSR[code.operand1]);
   //printf("FSR[code.operand2] :%d\n",FSR[code.operand2]);
-  TEST_ASSERT_EQUAL(0b01000000, FSR[code.operand2]);
+  TEST_ASSERT_EQUAL(0b01000000, FSR[code.operand2]);		//ADDRESS at 0x6C with bit 0100 0000
   TEST_ASSERT_EQUAL(108, FSR[code.operand1]);
   TEST_ASSERT_EQUAL_HEX8(0x6c, FSR[code.operand1]);
 }
@@ -178,7 +178,7 @@ void test_the_BSF_should_set_the_last_bit_to_1(){
   FSR[code.operand1] = 0x6C;
   bsf(&code);
   //printf("FSR[code.operand1] :%d\n",FSR[code.operand1]);
-  //printf("FSR[code.operand2] :%d\n",FSR[code.operand2]);
+  //printf("FSR[code.operand2] :%d\n",FSR[code.operand2]);	//ADDRESS at 0x6C with bit 1000 0000
   TEST_ASSERT_EQUAL(-(0b10000000), FSR[code.operand2]); //error become negative
   TEST_ASSERT_EQUAL(108, FSR[code.operand1]);
   TEST_ASSERT_EQUAL_HEX8(0x6c, FSR[code.operand1]);

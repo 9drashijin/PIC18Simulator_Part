@@ -27,7 +27,7 @@ void bsf(Bytecode *code) {
 	case 4: FSR[code->operand2] = 0b00010000; break;
 	case 5: FSR[code->operand2] = 0b00100000; break;
 	case 6: FSR[code->operand2] = 0b01000000; break;
-	case 7: FSR[code->operand2] = 0b10000000; break;
+	case 7: FSR[code->operand2] = 0b10000000; break;	//
 		default: FSR[code->operand1] = 0b00000000;  break;
 	}
 }
