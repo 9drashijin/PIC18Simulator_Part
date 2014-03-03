@@ -68,3 +68,4 @@ void test_the_fucntion_of_DECF_should_Decrement_FileReg_and_STORE_in_FileREG() {
   TEST_ASSERT_EQUAL_HEX8(0, FSR[WREG]);
   
 }
+

@@ -21,8 +21,7 @@ void test_the_fucntion_of_MOVLW_should_Move_Literal_to_WREG() {
   movlw(&code);
 
   // Unit test
-  TEST_ASSERT_EQUAL(0x5A, FSR[WREG]);		
-  TEST_ASSERT_EQUAL_HEX8(0x5A, FSR[WREG]);
+  TEST_ASSERT_EQUAL_HEX8(0x5A, FSR[WREG]);		//Address of operand1 is moved to WREG with the same address 0x5A
   
   TEST_ASSERT_EQUAL(-1, code.operand2);
   TEST_ASSERT_EQUAL(-1, code.operand3);
