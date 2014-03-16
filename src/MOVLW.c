@@ -19,7 +19,8 @@ char FSR[0x1000];
 
 //Move Literal to WREG
 void movlw(Bytecode *code) {
-	FSR[WREG] = code->operand1 ;
-	code->operand1 = -1;	//not using
-	code->operand1 = -1;	//not using
+	if(code->operand2 != -1 && code->operand3 == -1){FSR[WREG] = 1;}		// operand2 has valid value, but operand3 is -1
+	else if(code->operand3 != -1 && code->operand2 == -1){FSR[WREG] = 2;}	// operand3 has valid value, but operand2 is -1
+	else if(code->operand2 == -1 && code->operand3 == -1){FSR[WREG] = code->operand1;}	// both operand2 and operand3 are -1
+	else if(code->operand2 != -1 && code->operand3 != -1){FSR[WREG] = 4;}	// both operand2 and operand3 have valid values
 }

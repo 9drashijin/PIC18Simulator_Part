@@ -6,7 +6,7 @@
 void setUp() {}
 void tearDown() {}
 
-void test_the_BSF_should_set_the_first_bit_to_1(){
+void test_BSF_should_set_the_first_bit_to_1(){
   // Test fixture
   Instruction inst = {
                       .mnemonic = BSF,
@@ -29,7 +29,7 @@ void test_the_BSF_should_set_the_first_bit_to_1(){
   TEST_ASSERT_EQUAL_HEX8(0x6c, FSR[code.operand1]);
   TEST_ASSERT_EQUAL(1,FSR[code.operand2]);
 }
-void test_the_BSF_should_set_the_second_bit_to_1(){
+void test_BSF_should_set_the_second_bit_to_1(){
   // Test fixture
   Instruction inst = {
                       .mnemonic = BSF,
@@ -52,7 +52,7 @@ void test_the_BSF_should_set_the_second_bit_to_1(){
   TEST_ASSERT_EQUAL_HEX8(0x6c, FSR[code.operand1]);
   TEST_ASSERT_EQUAL(2,FSR[code.operand2]);
 }
-void test_the_BSF_should_set_the_Third_bit_to_1(){
+void test_BSF_should_set_the_third_bit_to_1(){
   // Test fixture
   Instruction inst = {
                       .mnemonic = BSF,
@@ -75,7 +75,7 @@ void test_the_BSF_should_set_the_Third_bit_to_1(){
   TEST_ASSERT_EQUAL_HEX8(0x6c, FSR[code.operand1]);
   TEST_ASSERT_EQUAL(4,FSR[code.operand2]);
 }
-void test_the_BSF_should_set_the_fourth_bit_to_1(){
+void test_BSF_should_set_the_fourth_bit_to_1(){
   // Test fixture
   Instruction inst = {
                       .mnemonic = BSF,
@@ -98,7 +98,7 @@ void test_the_BSF_should_set_the_fourth_bit_to_1(){
   TEST_ASSERT_EQUAL_HEX8(0x6c, FSR[code.operand1]);
   TEST_ASSERT_EQUAL(8,FSR[code.operand2]);
 }
-void test_the_BSF_should_set_the_fifth_bit_to_1(){
+void test_BSF_should_set_the_fifth_bit_to_1(){
   // Test fixture
   Instruction inst = {
                       .mnemonic = BSF,
@@ -122,7 +122,7 @@ void test_the_BSF_should_set_the_fifth_bit_to_1(){
   TEST_ASSERT_EQUAL(16,FSR[code.operand2]);
   
 }
-void test_the_BSF_should_set_the_sixth_bit_to_1(){
+void test_BSF_should_set_the_sixth_bit_to_1(){
   // Test fixture
   Instruction inst = {
                       .mnemonic = BSF,
@@ -145,7 +145,7 @@ void test_the_BSF_should_set_the_sixth_bit_to_1(){
   TEST_ASSERT_EQUAL_HEX8(0x6c, FSR[code.operand1]);
   TEST_ASSERT_EQUAL(32,FSR[code.operand2]);
 }
-void test_the_BSF_should_set_the_seventh_bit_to_1(){
+void test_BSF_should_set_the_seventh_bit_to_1(){
   // Test fixture
   Instruction inst = {
                       .mnemonic = BSF,
@@ -168,7 +168,7 @@ void test_the_BSF_should_set_the_seventh_bit_to_1(){
   TEST_ASSERT_EQUAL_HEX8(0x6c, FSR[code.operand1]);
   TEST_ASSERT_EQUAL(64,FSR[code.operand2]);
 }
-void test_the_BSF_should_set_the_last_bit_to_1(){
+void test_BSF_should_set_the_last_bit_to_1(){
   // Test fixture
   Instruction inst = {
                       .mnemonic = BSF,
@@ -191,7 +191,7 @@ void test_the_BSF_should_set_the_last_bit_to_1(){
   TEST_ASSERT_EQUAL_HEX8(0x6c, FSR[code.operand1]);
 }
 
-void test_the_function_BSF_with_the_operand3_set_to_1_should_set_the_fifth_bit_to_1(){
+void test_BSF_given_the_operand3_set_to_1_and_should_set_the_fifth_bit_to_1_with_the_BSR_address(){
   // Test fixture
   Instruction inst = {
                       .mnemonic = BSF,
@@ -221,7 +221,7 @@ void test_the_function_BSF_with_the_operand3_set_to_1_should_set_the_fifth_bit_t
   TEST_ASSERT_EQUAL(16,FSR[code.operand2]);
 }
 
-void test_the_function_BSF_with_the_operand3_set_to_1_should_set_the_seventh_bit_to_1(){
+void test_BSF_given_the_operand3_set_to_1_should_set_the_seventh_bit_to_1_with_the_BSR_address(){
   // Test fixture
   Instruction inst = {
                       .mnemonic = BSF,

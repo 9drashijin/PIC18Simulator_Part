@@ -6,6 +6,8 @@
 
 extern char FSR[];
 
+typedef enum {ACCESS, BANKED, W, F} CException;
+
 void addwf(Bytecode *code);
 
 #endif	// __ADDWF_H__

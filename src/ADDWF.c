@@ -39,7 +39,7 @@ char FSR[0x1000];
 *	1111: Bank15;FFh|___|FFFh
 *
 */
-//Add WREG to FileReg
+//Add WREG to FileReg (affected C,DC,Z)
 void addwf(Bytecode *code) {
 
 	if		(code->operand2 == 1){

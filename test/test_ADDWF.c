@@ -6,7 +6,7 @@
 void setUp() {}
 void tearDown() {}
 
-void test_the_fucntion_of_ADDWF_should_Add_WREG_and_FileReg_STORE_in_WREG() {
+void test_ADDWF_should_add_the_value_in_WREG_with_FileReg_and_STORE_in_WREG() {
   // Test fixture
   Instruction inst = {
                       .mnemonic = ADDWF,
@@ -37,7 +37,7 @@ void test_the_fucntion_of_ADDWF_should_Add_WREG_and_FileReg_STORE_in_WREG() {
   TEST_ASSERT_EQUAL_STRING("addwf",inst.name);
 }
 
-void test_the_fucntion_of_ADDWF_should_Add_WREG_and_FileReg_STORE_in_FileREG() {
+void test_ADDWF_should_add_the_value_in_WREG_with_FileReg_and_STORE_in_FileREG() {
   // Test fixture
   Instruction inst = {
                       .mnemonic = ADDWF,
@@ -68,7 +68,7 @@ void test_the_fucntion_of_ADDWF_should_Add_WREG_and_FileReg_STORE_in_FileREG() {
   TEST_ASSERT_EQUAL_STRING("addwf",inst.name);
 }
 
-void test_function_ADDWF_with_the_operand3_set_to_1_and_select_BSR_address_for_WREG(){
+void test_ADDWF_given_the_operand3_set_to_1_and_should_add_the_value_in_WREG_with_FileReg_and_STORE_in_WREG_with_the_BSR_address(){
   
   Instruction inst = {
                       .mnemonic = ADDWF,
@@ -97,7 +97,7 @@ void test_function_ADDWF_with_the_operand3_set_to_1_and_select_BSR_address_for_W
   TEST_ASSERT_EQUAL_HEX8(0x01,FSR[BSR]);							//The selected BSR is bank 1 and the Opcode should start form here.
   TEST_ASSERT_EQUAL_HEX8(0x15A,code.operand1 + (FSR[BSR]<<8));		//The selected BSR is bank 1 which start from 0x01 followed by the Opcode Address 5A
 }
-void test_function_ADDWF_with_the_operand3_set_to_1_and_select_BSR_address_for_FileReg(){
+void test_ADDWF_given_the_operand3_set_to_1_and_should_add_the_value_in_WREG_with_FileReg_and_STORE_in_FileReg_with_the_BSR_address(){
   
   Instruction inst = {
                       .mnemonic = ADDWF,

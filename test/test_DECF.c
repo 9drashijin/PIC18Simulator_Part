@@ -6,7 +6,7 @@
 void setUp() {}
 void tearDown() {}
 
-void test_the_fucntion_of_DECF_should_Decrement_FileReg_and_STORE_in_WREG() {
+void test_DECF_should_decrement_the_value_in_FileReg_and_STORE_in_WREG() {
   // Test fixture
   Instruction inst = {
                       .mnemonic = DECF,
@@ -38,7 +38,7 @@ void test_the_fucntion_of_DECF_should_Decrement_FileReg_and_STORE_in_WREG() {
   
 }
 
-void test_the_fucntion_of_DECF_should_Decrement_FileReg_and_STORE_in_FileREG() {
+void test_DECF_should_decrement_the_value_in_FileReg_and_STORE_in_FileREG() {
   // Test fixture
   Instruction inst = {
                       .mnemonic = DECF,
@@ -69,7 +69,7 @@ void test_the_fucntion_of_DECF_should_Decrement_FileReg_and_STORE_in_FileREG() {
   
 }
 
-void test_function_DECF_with_the_operand3_set_to_1_and_select_BSR_address_for_WREG(){
+void test_DECF_given_the_operand3_set_to_1_and_should_decrement_the_value_in_FileReg_and_STORE_in_WREG_with_the_BSR_address(){
   
   Instruction inst = {
                       .mnemonic = DECF,
@@ -99,7 +99,7 @@ void test_function_DECF_with_the_operand3_set_to_1_and_select_BSR_address_for_WR
   FSR[WREG] = 0; 	//clear the WREG to 0
 }
 
-void test_function_DECF_with_the_operand3_set_to_1_and_select_BSR_address_for_FileReg(){
+void test_DECF_given_the_operand3_set_to_1_and_should_decrement_the_value_in_FileReg_and_STORE_in_FileReg_with_the_BSR_address(){
   
   Instruction inst = {
                       .mnemonic = DECF,

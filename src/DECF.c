@@ -18,7 +18,7 @@ char FSR[0x1000];
   *
 */
 
-//Decrement f
+//Decrement f (affected Z)
 void decf(Bytecode *code) {
 
 	if		(code->operand2 == 1){

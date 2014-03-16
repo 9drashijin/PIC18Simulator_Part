@@ -6,6 +6,8 @@
 
 extern char FSR[];
 
+typedef enum {ACCESS, BANKED, W, F} CException;
+
 void decf(Bytecode *code);
 
 #endif	// __DECF_H__
