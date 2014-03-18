@@ -20,14 +20,14 @@ char FSR[0x1000];
 //Bit Set FileReg
 void bsf(Bytecode *code) {
 	switch (code->operand2 ){
-	case 0: FSR[code->operand2] = 0b00000001; break;	// 1
-	case 1: FSR[code->operand2] = 0b00000010; break;	// 2
-	case 2: FSR[code->operand2] = 0b00000100; break;	// 4
-	case 3: FSR[code->operand2] = 0b00001000; break;	// 8
-	case 4: FSR[code->operand2] = 0b00010000; break;	// 16
-	case 5: FSR[code->operand2] = 0b00100000; break;	// 32
-	case 6: FSR[code->operand2] = 0b01000000; break;	// 64
-	case 7: FSR[code->operand2] = 0b10000000; break;	// 128
+	case 0: FSR[code->operand1] = FSR[code->operand1] | 0b00000001; break;	// 1
+	case 1: FSR[code->operand1] = FSR[code->operand1] | 0b00000010; break;	// 2
+	case 2: FSR[code->operand1] = FSR[code->operand1] | 0b00000100; break;	// 4
+	case 3: FSR[code->operand1] = FSR[code->operand1] | 0b00001000; break;	// 8
+	case 4: FSR[code->operand1] = FSR[code->operand1] | 0b00010000; break;	// 16
+	case 5: FSR[code->operand1] = FSR[code->operand1] | 0b00100000; break;	// 32
+	case 6: FSR[code->operand1] = FSR[code->operand1] | 0b01000000; break;	// 64
+	case 7: FSR[code->operand1] = FSR[code->operand1] | 0b10000000; break;	// 128
 		default: FSR[code->operand1] = 0b00000000;  break;
 	}
 	if (code->operand3 == 1){
