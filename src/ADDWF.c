@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "Bytecode.h"
 #include "ADDWF.h"
+#include "CException.h"
 
 char FSR[0x1000]; 
 //FSR0H = FEAh 4074d
@@ -42,6 +43,7 @@ char FSR[0x1000];
 //Add WREG to FileReg (affected C,DC,Z)
 void addwf(Bytecode *code) {
 
+	if(code->operand1 > 0xff || code->operand1 < 0x00){Throw(INVALID_RANGE);}
 	if		(code->operand2 == 1){
 		FSR[code->operand1] = FSR[code->operand1] + FSR[WREG];
 	}
@@ -54,8 +56,13 @@ void addwf(Bytecode *code) {
 	}
 	if (code->operand3 == 1){
 		FSR[code->operand1 + (FSR[BSR]*256)]; ///(FSR[BSR]*256) same as shift << 8 bit to left, 2^8 is 256.
+		
+		if(FSR[BSR] = 0 && FSR[code->operand1] <= 80){FSR[BSR] = 0x00;}
+		else if(FSR[BSR] = 15 && FSR[code->operand1] >= 80){FSR[BSR] = 0x0F;}
+		
 			switch(FSR[BSR]){
-			case 0: FSR[BSR] = 0x00; break;
+			if (FSR[BSR] > 15){Throw(INVALID_BSR);}
+			//case 0: FSR[BSR] = 0x00; break;
 			case 1: FSR[BSR] = 0x01; break;
 			case 2: FSR[BSR] = 0x02; break;
 			case 3: FSR[BSR] = 0x03; break;
@@ -70,8 +77,7 @@ void addwf(Bytecode *code) {
 			case 12: FSR[BSR] = 0x0C; break;
 			case 13: FSR[BSR] = 0x0D; break;
 			case 14: FSR[BSR] = 0x0E; break;
-			case 15: FSR[BSR] = 0x0F; break;
-				default: FSR[BSR] = 0x00; break;
+			//case 15: FSR[BSR] = 0x0F; break;
 			}
 		}
 }

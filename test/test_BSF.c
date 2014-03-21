@@ -2,6 +2,7 @@
 #include "Bytecode.h"
 #include "BSF.h"
 #include <stdio.h>
+#include "CException.h"
 
 void setUp() {}
 void tearDown() {}
@@ -265,4 +266,42 @@ void test_BSF_given_the_operand3_set_to_1_should_set_the_seventh_bit_to_1_with_t
   FSR[code.operand1] = 0b00001111;
   bsf(&code);
   TEST_ASSERT_EQUAL(0b01001111, FSR[code.operand1]);
+}
+
+void test_BSF_invalid_range() {
+  Instruction inst = {
+                      .mnemonic = BSF,
+                      .name = "bsf"
+                     };	
+  Bytecode code = { .instruction = &inst,
+                    .operand1 = 0xFFFF,
+                    .operand2 =	0, 
+                    .operand3 = 0, 
+                  };
+  CException errorRange;
+  Try{
+	bsf(&code);
+  }
+  Catch(errorRange){
+	TEST_ASSERT_EQUAL(INVALID_RANGE,errorRange);
+  }
+}
+void test_BSF_invalid_BSR() {
+  Instruction inst = {
+                      .mnemonic = BSF,
+                      .name = "bsf"
+                     };	
+  Bytecode code = { .instruction = &inst,
+                    .operand1 = 0xFF,
+                    .operand2 =	1, 
+                    .operand3 = 1, 
+                  };
+  FSR[BSR] = 20;
+  CException errorRange;
+  Try{
+	bsf(&code);
+  }
+  Catch(errorRange){
+	TEST_ASSERT_EQUAL(INVALID_BSR,errorRange);
+  }
 }

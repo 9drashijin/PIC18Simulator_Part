@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "Bytecode.h"
 #include "BSF.h"
+#include "CException.h"
 
 char FSR[0x1000]; 
 //FSR0H = FEAh 4074d
@@ -19,6 +20,8 @@ char FSR[0x1000];
 
 //Bit Set FileReg
 void bsf(Bytecode *code) {
+	if(code->operand1 > 0xff || code->operand1 < 0x00){Throw(INVALID_RANGE);}
+
 	switch (code->operand2 ){
 	case 0: FSR[code->operand1] = FSR[code->operand1] | 0b00000001; break;	// 1
 	case 1: FSR[code->operand1] = FSR[code->operand1] | 0b00000010; break;	// 2
@@ -33,6 +36,7 @@ void bsf(Bytecode *code) {
 	if (code->operand3 == 1){
 		FSR[code->operand1 + (FSR[BSR]*256)]; ///(FSR[BSR]*256) same as shift << 8 bit to left, 2^8 is 256.
 			switch(FSR[BSR]){
+			if(FSR[BSR] > 15){Throw(INVALID_BSR);}
 			case 0: FSR[BSR] = 0x00; break;
 			case 1: FSR[BSR] = 0x01; break;
 			case 2: FSR[BSR] = 0x02; break;

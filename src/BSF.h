@@ -5,6 +5,7 @@
 #define		BSR 	0xFE0
 
 extern char FSR[];
+//extern int PIC18Stack[32];
 
 void bsf(Bytecode *code);
 
