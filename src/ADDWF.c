@@ -39,44 +39,76 @@ void addwf(Bytecode *code) {
 	if (code->operand3 == -1){code->operand3 = ACCESS;}	//default if no value input
 	if(code->operand1 > 0xff || code->operand1 < 0x00){Throw(INVALID_RANGE);}
 	else{
-	if		(code->operand2 == 1){
-		FSR[code->operand1] = FSR[code->operand1] + FSR[WREG];
-	}
-	else if (code->operand2 == 0){
-		FSR[WREG] = FSR[WREG] + FSR[code->operand1];
-	}
-	else if (code->operand2 == BANKED || code->operand2 == ACCESS ){Throw(INVALID_OPERAND);}		// operand 2 with ACCESS or BANKED
-	else if (code->operand3 == W || code->operand3 == F){Throw(INVALID_OPERAND);}					// operand 3 with WREG or FileReg
-	else if (code->operand2 <-5 || code->operand2 >1){Throw(INVALID_OPERAND);}						// operand 2 more than -5 or 1
-	else if (code->operand3 <-5 || code->operand3 >1){Throw(INVALID_OPERAND);}						// operand 3 more than -5 or 1
-		
-	if (code->operand3 == 1 || code->operand3 == BANKED){
-		if(FSR[BSR] > 15){Throw(INVALID_BSR);}
-		if(code->operand1 < 0x80){FSR[BSR] = 0x00;}
-		else if(code->operand1 >= 0x80){FSR[BSR] = 0x0F;}
-		FSR[code->operand1 + (FSR[BSR]*256)]; ///(FSR[BSR]*256) same as shift << 8 bit to left, 2^8 is 256.
+		int temp1 = FSR[code->operand1];
+		int temp2 = FSR[code->operand1+(0x0F00)];
+		if	(code->operand2 == 1 || code->operand2 == F ){
+			if(code->operand1 < 0x80){
+			FSR[code->operand1] = FSR[code->operand1] + FSR[WREG];
+			if(FSR[code->operand1] <= -1)			{FSR[STATUS] = 0b00010000;} // 0 0 0 0 0  0 0  0
+			else if(FSR[code->operand1] == ~(temp1)){FSR[STATUS] = 0b00001000;} // - - - N OV Z DC C
+			else if(FSR[code->operand1] == 0)		{FSR[STATUS] = 0b00000100;}
+			else if(FSR[code->operand1] > 0x0F)		{FSR[STATUS] = 0b00000010;}
+			else if(FSR[code->operand1] > 0xFF)		{FSR[STATUS] = 0b00000001;}
+			}
+			else if(code->operand1 >= 0x80){
+			FSR[code->operand1+(0x0F00)] = FSR[code->operand1+(0x0F00)] + FSR[WREG];
+			if(FSR[code->operand1+(0x0F00)] <= -1)				{FSR[STATUS] = 0b00010000;} // 0 0 0 0 0  0 0  0
+			else if(FSR[code->operand1+(0x0F00)] == ~(temp2))	{FSR[STATUS] = 0b00001000;} // - - - N OV Z DC C
+			else if(FSR[code->operand1+(0x0F00)] == 0)			{FSR[STATUS] = 0b00000100;}
+			else if(FSR[code->operand1+(0x0F00)] > 0x0F)		{FSR[STATUS] = 0b00000010;}
+			else if(FSR[code->operand1+(0x0F00)] > 0xFF)		{FSR[STATUS] = 0b00000001;}
+			}
+		}
+		else if (code->operand2 == 0 || code->operand2 == W){
+			if(code->operand1 < 0x80){
+			FSR[WREG] = FSR[WREG] + FSR[code->operand1];
+			if(FSR[code->operand1] <= -1)	{FSR[STATUS] = 0b00010000;} // 0 0 0 0 0  0 0  0
+			else if(FSR[WREG] == ~(temp1))	{FSR[STATUS] = 0b00001000;} //overflow occurs when (+A)+(+B)=−C or (−A)+(−B)=+C
+			else if(FSR[WREG] == 0)			{FSR[STATUS] = 0b00000100;}
+			else if(FSR[WREG] > 0x0F)		{FSR[STATUS] = 0b00000010;}
+			else if(FSR[WREG] > 0xFF)		{FSR[STATUS] = 0b00000001;}
+			}
+			else if(code->operand1 >= 0x80){
+			FSR[WREG+(0x0F00)] = FSR[code->operand1+(0x0F00)] + FSR[WREG];
+			if(FSR[code->operand1] <= -1)	{FSR[STATUS] = 0b00010000;} // 0 0 0 0 0  0 0  0
+			else if(FSR[WREG] == ~(temp2))	{FSR[STATUS] = 0b00001000;} // - - - N OV Z DC C
+			else if(FSR[WREG] == 0)			{FSR[STATUS] = 0b00000100;}
+			else if(FSR[WREG] > 0x0F)		{FSR[STATUS] = 0b00000010;}
+			else if(FSR[WREG] > 0xFF)		{FSR[STATUS] = 0b00000001;}
+			}
+		}
+		else if (code->operand2 == BANKED || code->operand2 == ACCESS ){Throw(INVALID_OPERAND);}		// operand 2 with ACCESS or BANKED
+		else if (code->operand3 == W || code->operand3 == F){Throw(INVALID_OPERAND);}					// operand 3 with WREG or FileReg
+		else if (code->operand2 <-5 || code->operand2 >1){Throw(INVALID_OPERAND);}						// operand 2 more than -5 or 1
+		else if (code->operand3 <-5 || code->operand3 >1){Throw(INVALID_OPERAND);}						// operand 3 more than -5 or 1
+			
+		if (code->operand3 == 1 || code->operand3 == BANKED){
+			if(FSR[BSR] > 15){Throw(INVALID_BSR);}
+			if(code->operand1 < 0x80){FSR[BSR] = 0x00;}
+			else if(code->operand1 >= 0x80){FSR[BSR] = 0x0F;}
+			FSR[code->operand1 + (FSR[BSR]*256)]; ///(FSR[BSR]*256) same as shift << 8 bit to left, 2^8 is 256.
 		}
 	}
 }
-// if (code->operand3 == 1){
-		// FSR[code->operand1 + (FSR[BSR]*256)]; ///(FSR[BSR]*256) same as shift << 8 bit to left, 2^8 is 256.
-		// if(FSR[BSR] = 0 && FSR[code->operand1] <= 80){FSR[BSR] = 0x00;}
-		// else if(FSR[BSR] = 15 && FSR[code->operand1] >= 80){FSR[BSR] = 0x0F;}
-			// switch(FSR[BSR]){
-			// if (FSR[BSR] > 15){Throw(INVALID_BSR);}
-			// case 1: FSR[BSR] = 0x01; break;
-			// case 2: FSR[BSR] = 0x02; break;
-			// case 3: FSR[BSR] = 0x03; break;
-			// case 4: FSR[BSR] = 0x04; break;
-			// case 5: FSR[BSR] = 0x05; break;
-			// case 6: FSR[BSR] = 0x06; break;
-			// case 7: FSR[BSR] = 0x07; break;
-			// case 8: FSR[BSR] = 0x08; break;
-			// case 9: FSR[BSR] = 0x09; break;
-			// case 10: FSR[BSR] = 0x0A; break;
-			// case 11: FSR[BSR] = 0x0B; break;
-			// case 12: FSR[BSR] = 0x0C; break;
-			// case 13: FSR[BSR] = 0x0D; break;
-			// case 14: FSR[BSR] = 0x0E; break;
-			// }
-		// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

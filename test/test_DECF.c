@@ -251,6 +251,7 @@ void test_DECF_for_the_affected_status_zero_flag(){
                   };
   FSR[code.operand1] = 1;
   decf(&code);
+  TEST_ASSERT_EQUAL(0,FSR[code.operand1]);
   TEST_ASSERT_EQUAL(0b00000100,FSR[STATUS]);// - - - N OV Z DC C
 }
 void test_DECF_for_the_affected_status_negative_flag(){
@@ -262,6 +263,7 @@ void test_DECF_for_the_affected_status_negative_flag(){
                   };
   FSR[code.operand1] = 0;
   decf(&code);
+  TEST_ASSERT_EQUAL(-1,FSR[WREG]);
   TEST_ASSERT_EQUAL(0b00010000,FSR[STATUS]);// - - - N OV Z DC C
 }
 void test_DECF_for_the_affected_status_overflow_flag(){
@@ -275,5 +277,6 @@ void test_DECF_for_the_affected_status_overflow_flag(){
   decf(&code);
   // printf("operand1: %d\n",FSR[code.operand1]);
   // printf("status: %d",FSR[STATUS]);
-  TEST_ASSERT_EQUAL(0b00010000,FSR[STATUS]);// - - - N OV Z DC C
+  TEST_ASSERT_EQUAL(127,FSR[code.operand1]);
+  TEST_ASSERT_EQUAL(0b00001000,FSR[STATUS]);// - - - N OV Z DC C
 }
