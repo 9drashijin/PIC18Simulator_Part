@@ -4,11 +4,6 @@
 #include "CException.h"
 
 char FSR[0x1000]; 
-//FSR0H = FEAh 4074d
-//FSR0L = FE9h 4073d
-//FSR1H = FE2h 4066d
-//FSR1L = FE1h 4065d
-
 //WREG 	= 0xFE8
 
 /**	

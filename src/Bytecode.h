@@ -45,7 +45,7 @@ typedef struct {
 	int operand1;
 	int operand2;
 	int operand3;
-	int absuluteAddress;
+	int absoluteAddress;
 } Bytecode;
 
 #endif	// __BYTECODE_H__

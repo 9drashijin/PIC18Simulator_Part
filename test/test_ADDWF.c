@@ -94,8 +94,7 @@ void test_ADDWF_given_the_operand3_set_to_1_and_should_add_the_value_in_WREG_wit
   
   TEST_ASSERT_EQUAL_HEX8(10,FSR[code.operand1]);					//The Added value is 30 but store in WREG not in FileReg, thus the value in here still 10
   TEST_ASSERT_EQUAL_HEX8(30,FSR[WREG]);								//The Added value is 30 and the value store in WREG, with the operand 1 set to 0
-  TEST_ASSERT_EQUAL_HEX8(0x5A,code.operand1);						//The Address of FileReg Operand1 is 5A = 90 in decimal
-  TEST_ASSERT_EQUAL_HEX8(0x15A,code.operand1 + (FSR[BSR]<<8));		//The selected BSR is bank 1 which start from 0x01 followed by the Opcode Address 5A
+  TEST_ASSERT_EQUAL_HEX8(0x15A,code.operand1);		//The selected BSR is bank 1 which start from 0x01 followed by the Opcode Address 5A
 }
 void test_ADDWF_given_the_operand3_set_to_1_and_should_add_the_value_in_WREG_with_FileReg_and_STORE_in_FileReg_with_the_BSR_address(){
   
@@ -122,8 +121,7 @@ void test_ADDWF_given_the_operand3_set_to_1_and_should_add_the_value_in_WREG_wit
   
   TEST_ASSERT_EQUAL_HEX8(50,FSR[code.operand1]);					//The Added value is 50 and the value store in FileReg, with the operand 1 set to 1
   TEST_ASSERT_EQUAL_HEX8(30,FSR[WREG]);								//The Added value is 30 but store in FileReg not in WREG, thus the value in here still 30
-  TEST_ASSERT_EQUAL_HEX8(0xFC,code.operand1);						//The Address of FileReg Operand1 is FC = 252 in decimal
-  TEST_ASSERT_EQUAL_HEX8(0xFFC,code.operand1 + (FSR[BSR]<<8));		//The selected BSR is bank 15 last bank which start from 0x0F followed by the Opcode Address FC
+  TEST_ASSERT_EQUAL_HEX8(0xFFC,code.operand1);		//The selected BSR is bank 15 last bank which start from 0x0F followed by the Opcode Address FC
 }
 void test_ADDWF_invalid_range() {
   Instruction inst = {
