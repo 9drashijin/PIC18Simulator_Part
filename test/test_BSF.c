@@ -16,7 +16,7 @@ void test_BSF_should_set_the_first_bit_to_1(){
   Bytecode code = { .instruction = &inst,
                     .operand1 = 0x5A,	// address of FileReg	
                     .operand2 =	0, 		// (0~7), Set bit 0 to 7
-                    .operand3 = 0, 		// 0 = Access Bank is Selected, BSR ignored\
+                    .operand3 = ACCESS, 		// 0 = Access Bank is Selected, BSR ignored\
 										   1 = BSR is used to select the GPR bank (default).		
                   };
   // TEST the Bit Set
@@ -38,7 +38,7 @@ void test_BSF_should_set_the_second_bit_to_1(){
   Bytecode code = { .instruction = &inst,
                     .operand1 = 0x5A,	// address of FileReg	
                     .operand2 =	1, 		// (0~7), Set bit 0 to 7
-                    .operand3 = 0, 		// 0 = Access Bank is Selected, BSR ignored\
+                    .operand3 = -5, 		// 0 = Access Bank is Selected, BSR ignored\
 										   1 = BSR is used to select the GPR bank (default).		
                   };
   // TEST the Bit Set
@@ -87,7 +87,7 @@ void test_BSF_should_set_the_fourth_bit_to_1(){
   Bytecode code = { .instruction = &inst,
                     .operand1 = 0x5A,	// address of FileReg	
                     .operand2 =	3, 		// (0~7), Set bit 0 to 7
-                    .operand3 = 0, 		// 0 = Access Bank is Selected, BSR ignored\
+                    .operand3 = ACCESS, 		// 0 = Access Bank is Selected, BSR ignored\
 										   1 = BSR is used to select the GPR bank (default).		
                   };
   // TEST the Bit Set
@@ -137,7 +137,7 @@ void test_BSF_should_set_the_sixth_bit_to_1(){
   Bytecode code = { .instruction = &inst,
                     .operand1 = 0x5A,	// address of FileReg	
                     .operand2 =	5, 		// (0~7), Set bit 0 to 7
-                    .operand3 = 0, 		// 0 = Access Bank is Selected, BSR ignored\
+                    .operand3 = ACCESS, 		// 0 = Access Bank is Selected, BSR ignored\
 										   1 = BSR is used to select the GPR bank (default).		
                   };
   // TEST the Bit Set
@@ -229,7 +229,7 @@ void test_BSF_given_the_operand3_set_to_1_and_should_set_the_fifth_bit_to_1_with
   TEST_ASSERT_EQUAL_HEX8(0x9B, FSR[code.operand1]);					//ADDRESS of FileREg is at 0x9B
 
   TEST_ASSERT_EQUAL_HEX8(0xB9,code.operand1);						//The Address of FileReg Operand1 is B9 = 185 in decimal
-  TEST_ASSERT_EQUAL_HEX8(0x08,FSR[BSR]);							//The selected BSR is bank 8 last bank and the Opcode should start form here.
+  TEST_ASSERT_EQUAL_HEX8(0x0F,FSR[BSR]);							//The selected BSR is bank 8 but operand1 more than 80 thus default to 0x0f
   TEST_ASSERT_EQUAL_HEX8(0x8B9,code.operand1 + (FSR[BSR]<<8));		//The selected BSR is bank 8 last bank which start from 0x08 followed by the Opcode Address B9
 }
 
@@ -259,13 +259,13 @@ void test_BSF_given_the_operand3_set_to_1_should_set_the_seventh_bit_to_1_with_t
   TEST_ASSERT_EQUAL_HEX8(0x6c, FSR[code.operand1]);					//ADDRESS of FileREg is at 0x6C
 
   TEST_ASSERT_EQUAL_HEX8(0xFC,code.operand1);						//The Address of FileReg Operand1 is FC = 252 in decimal
-  TEST_ASSERT_EQUAL_HEX8(0x05,FSR[BSR]);							//The selected BSR is bank 5 last bank and the Opcode should start form here.
+  TEST_ASSERT_EQUAL_HEX8(0x0F,FSR[BSR]);							//The selected BSR is bank 5 but operand1 more than 80 thus default to 0x0f
   TEST_ASSERT_EQUAL_HEX8(0x5FC,code.operand1 + (FSR[BSR]<<8));		//The selected BSR is bank 5 last bank which start from 0x05 followed by the Opcode Address FC
   
   //test for other value
-  FSR[code.operand1] = 0b00001111;
+  FSR[code.operand1+(0x0F00)] = 0b00001111;
   bsf(&code);
-  TEST_ASSERT_EQUAL(0b01001111, FSR[code.operand1]);
+  TEST_ASSERT_EQUAL(0b01001111, FSR[code.operand1+(0x0F00)]);
 }
 
 void test_BSF_invalid_range() {
@@ -303,5 +303,65 @@ void test_BSF_invalid_BSR() {
   }
   Catch(errorRange){
 	TEST_ASSERT_EQUAL(INVALID_BSR,errorRange);
+  }
+}
+void test_BSF_given_operand1_value_more_than_0x80_should_move_to_last_bank(){
+  Instruction inst = {.mnemonic = BSF,.name = "bsf"};	
+  Bytecode code = { .instruction = &inst,
+                    .operand1 = 0xE1,
+                    .operand2 =	2, 
+                    .operand3 = BANKED, 
+                  };
+  FSR[code.operand1+(0x0F00)] = 10;
+  //printf("bsr: %d\n",FSR[BSR]);
+  bsf(&code);
+  // printf("bsr: %d\n",FSR[BSR]);
+  // printf("operand1: %d\n",FSR[code.operand1]);
+  // printf("+(0x0F00): %d",FSR[code.operand1+(0x0F00)]);
+  TEST_ASSERT_EQUAL(14,FSR[code.operand1+(0x0F00)]);
+  TEST_ASSERT_EQUAL(14,FSR[0xFE1]);			  
+}
+void test_BSF_given_operand1_value_less_than_0x80_should_move_to_first_bank(){
+  Instruction inst = {.mnemonic = BSF,.name = "bsf"};	
+  Bytecode code = { .instruction = &inst,
+                    .operand1 = 0x01,
+                    .operand2 =	4, 
+                    .operand3 = BANKED, 
+                  };
+  FSR[code.operand1] = 10;
+  bsf(&code);
+  TEST_ASSERT_EQUAL(0b00011010,FSR[code.operand1]);
+  TEST_ASSERT_EQUAL(0b00011010,FSR[0x001]);			  
+}
+void test_BSF_given_the_operand2_and_operand3_with_invalid_input_should_catch_error(){
+  Instruction inst = {.mnemonic = BSF,.name = "bsf"};	
+  Bytecode code = { .instruction = &inst,
+                    .operand1 = 0x01,
+                    .operand2 =	BANKED,	//ERROR (range only from 0 to 7)
+                    .operand3 = W,		//ERROR (only ACCESS,BANKED,-5,-4 are allowed)
+                  };
+  CException errorRange;
+  FSR[code.operand1] = 10;
+  Try{
+	bsf(&code);
+  }
+  Catch(errorRange){
+	TEST_ASSERT_EQUAL(INVALID_OPERAND,errorRange);
+  }
+}
+void test_BSF_given_the_operand2_and_operand3_with_invalid_input_should_catch_error2(){
+  Instruction inst = {.mnemonic = BSF,.name = "bsf"};	
+  Bytecode code = { .instruction = &inst,
+                    .operand1 = 0x01,
+                    .operand2 =	10,		//ERROR (range only from 0 to 7)
+                    .operand3 = -6,		//ERROR (only ACCESS,BANKED,-5,-4 are allowed)
+                  };
+  CException errorRange;
+  FSR[code.operand1] = 10;
+  Try{
+	bsf(&code);
+  }
+  Catch(errorRange){
+	TEST_ASSERT_EQUAL(INVALID_OPERAND,errorRange);
   }
 }

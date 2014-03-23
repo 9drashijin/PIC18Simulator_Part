@@ -20,40 +20,43 @@ char FSR[0x1000];
 
 //Bit Set FileReg
 void bsf(Bytecode *code) {
+	if (code->operand3 == -1){code->operand3 = ACCESS;}	//default if no value input
 	if(code->operand1 > 0xff || code->operand1 < 0x00){Throw(INVALID_RANGE);}
-
-	switch (code->operand2 ){
-	case 0: FSR[code->operand1] = FSR[code->operand1] | 0b00000001; break;	// 1
-	case 1: FSR[code->operand1] = FSR[code->operand1] | 0b00000010; break;	// 2
-	case 2: FSR[code->operand1] = FSR[code->operand1] | 0b00000100; break;	// 4
-	case 3: FSR[code->operand1] = FSR[code->operand1] | 0b00001000; break;	// 8
-	case 4: FSR[code->operand1] = FSR[code->operand1] | 0b00010000; break;	// 16
-	case 5: FSR[code->operand1] = FSR[code->operand1] | 0b00100000; break;	// 32
-	case 6: FSR[code->operand1] = FSR[code->operand1] | 0b01000000; break;	// 64
-	case 7: FSR[code->operand1] = FSR[code->operand1] | 0b10000000; break;	// 128
-		default: FSR[code->operand1] = 0b00000000;  break;
-	}
-	if (code->operand3 == 1){
-		FSR[code->operand1 + (FSR[BSR]*256)]; ///(FSR[BSR]*256) same as shift << 8 bit to left, 2^8 is 256.
-			switch(FSR[BSR]){
-			if(FSR[BSR] > 15){Throw(INVALID_BSR);}
-			case 0: FSR[BSR] = 0x00; break;
-			case 1: FSR[BSR] = 0x01; break;
-			case 2: FSR[BSR] = 0x02; break;
-			case 3: FSR[BSR] = 0x03; break;
-			case 4: FSR[BSR] = 0x04; break;
-			case 5: FSR[BSR] = 0x05; break;
-			case 6: FSR[BSR] = 0x06; break;
-			case 7: FSR[BSR] = 0x07; break;
-			case 8: FSR[BSR] = 0x08; break;
-			case 9: FSR[BSR] = 0x09; break;
-			case 10: FSR[BSR] = 0x0A; break;
-			case 11: FSR[BSR] = 0x0B; break;
-			case 12: FSR[BSR] = 0x0C; break;
-			case 13: FSR[BSR] = 0x0D; break;
-			case 14: FSR[BSR] = 0x0E; break;
-			case 15: FSR[BSR] = 0x0F; break;
-				default: FSR[BSR] = 0x00; break;
-			}
+	
+	if(code->operand1 < 0x80){
+		switch (code->operand2 ){
+		case 0: FSR[code->operand1] = FSR[code->operand1] | 0b00000001; break;	// 1
+		case 1: FSR[code->operand1] = FSR[code->operand1] | 0b00000010; break;	// 2
+		case 2: FSR[code->operand1] = FSR[code->operand1] | 0b00000100; break;	// 4
+		case 3: FSR[code->operand1] = FSR[code->operand1] | 0b00001000; break;	// 8
+		case 4: FSR[code->operand1] = FSR[code->operand1] | 0b00010000; break;	// 16
+		case 5: FSR[code->operand1] = FSR[code->operand1] | 0b00100000; break;	// 32
+		case 6: FSR[code->operand1] = FSR[code->operand1] | 0b01000000; break;	// 64
+		case 7: FSR[code->operand1] = FSR[code->operand1] | 0b10000000; break;	// 128
+			default: FSR[code->operand1] = 0b00000000;  break;
 		}
+	}
+	else if(code->operand1 >= 0x80){
+		switch (code->operand2 ){
+		case 0: FSR[code->operand1+(0x0F00)] = FSR[code->operand1+(0x0F00)] | 0b00000001; break;	// 1
+		case 1: FSR[code->operand1+(0x0F00)] = FSR[code->operand1+(0x0F00)] | 0b00000010; break;	// 2
+		case 2: FSR[code->operand1+(0x0F00)] = FSR[code->operand1+(0x0F00)] | 0b00000100; break;	// 4
+		case 3: FSR[code->operand1+(0x0F00)] = FSR[code->operand1+(0x0F00)] | 0b00001000; break;	// 8
+		case 4: FSR[code->operand1+(0x0F00)] = FSR[code->operand1+(0x0F00)] | 0b00010000; break;	// 16
+		case 5: FSR[code->operand1+(0x0F00)] = FSR[code->operand1+(0x0F00)] | 0b00100000; break;	// 32
+		case 6: FSR[code->operand1+(0x0F00)] = FSR[code->operand1+(0x0F00)] | 0b01000000; break;	// 64
+		case 7: FSR[code->operand1+(0x0F00)] = FSR[code->operand1+(0x0F00)] | 0b10000000; break;	// 128
+			default: FSR[code->operand1+(0x0F00)] = 0b00000000;  break;
+		}
+	}
+	if (code->operand3 == W || code->operand3 == F){Throw(INVALID_OPERAND);}					// operand 3 with WREG or FileReg
+	else if (code->operand3 <-5 || code->operand3 >1){Throw(INVALID_OPERAND);}
+	else if (code->operand2 <0 || code->operand2 >7){Throw(INVALID_OPERAND);}
+	
+	if (code->operand3 == 1 || code->operand3 == BANKED){
+			if(FSR[BSR] > 15 || FSR[BSR]<0){FSR[BSR] = 0;Throw(INVALID_BSR);} // more than 15 or less than 0, clear BSR to 0
+			if(code->operand1 < 0x80){FSR[BSR] = 0x00;}
+			else if(code->operand1 >= 0x80){FSR[BSR] = 0x0F;}
+			FSR[code->operand1 + (FSR[BSR]*256)]; ///(FSR[BSR]*256) same as shift << 8 bit to left, 2^8 is 256.
+		} 
 }

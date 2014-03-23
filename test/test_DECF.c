@@ -167,7 +167,7 @@ void test_DECF_given_the_operand1_value_more_than_0x80_store_in_FileReg_also_wit
   Bytecode code = { .instruction = &inst,
                     .operand1 = 0xE1, //more than 0x79
                     .operand2 =	-1,   //-1 is empty :default FileReg		
-                    .operand3 = -1,   //default ACCESS	
+                    .operand3 = BANKED,   //default ACCESS	
                   };
   FSR[code.operand1+(0x0F00)] = 10;
   decf(&code);

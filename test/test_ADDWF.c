@@ -191,7 +191,7 @@ void test_ADDWF_given_the_operand1_value_more_than_0x80_store_in_WREG_also_with_
   Bytecode code = { .instruction = &inst,
                     .operand1 = 0xE1, 	//more than 0x79
                     .operand2 =	0, 		
-                    .operand3 = -5, 	//(ACCESS=-5,BANKED=-4,F=-3,W=-2,empty=-1)
+                    .operand3 = BANKED, 	//(ACCESS=-5,BANKED=-4,F=-3,W=-2,empty=-1)
                   };
   FSR[code.operand1+(0x0F00)] = 10;
   FSR[WREG] = 30;
