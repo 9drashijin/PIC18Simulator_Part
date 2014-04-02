@@ -31,8 +31,8 @@ typedef enum 	{
 					ANDLW,
 					MOVLW,	//
 					XORLW,
-					TBLRD_POSTINC, //+*
-					TBLWT_PREINC //*+
+					TBLWT_POSTINC, //*+
+					TBLRD_PREINC //+*
 				} Mnemonic;
 				
 typedef struct {
