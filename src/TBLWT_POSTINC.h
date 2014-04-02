@@ -15,7 +15,7 @@
 
 extern char FSR[];
 extern int PIC18Stack[32];
-extern int TABLE[2097152];
+extern int TABLE[0x200000];
 
 void tblwt_postinc(Bytecode *code);
 

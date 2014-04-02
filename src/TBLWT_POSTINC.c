@@ -4,7 +4,7 @@
 #include "CException.h"
 
 char FSR[0x1000];
-int TABLE[2097152];
+int TABLE[0x200000];
 
 void tblwt_postinc(Bytecode *code){
 	// TBLPTR
@@ -13,12 +13,10 @@ void tblwt_postinc(Bytecode *code){
 	// 2 = *-	post-decrement
 	// 3 = +*	pre-decrement
 	
-	// if(TABLE[(TBLPTRU<<8)+(TBLPTRH<<8)+TBLPTRL] = 1){ // post-increment
-		// TABLE[(TBLPTRU<<8)+(TBLPTRH<<8)+TBLPTRL] = FSR[TABLAT];
-		// TABLE[(TBLPTRU<<8)+(TBLPTRH<<8)+TBLPTRL] = TABLE[(TBLPTRU<<8)+(TBLPTRH<<8)+TBLPTRL]+1;
-	// }
-	
+	TABLE[TBLPTR] = ((TABLE[TBLPTRU]<<16) + (TABLE[TBLPTRH] <<8) + (TABLE[TBLPTRL]));
 	TABLE[HOLD] = FSR[TABLAT];
 	TABLE[TBLPTR] = TABLE[TBLPTR]+1;
+	
+	//printf("tabptr1st: %x\n" , TABLE[TBLPTR]);
 
 }
