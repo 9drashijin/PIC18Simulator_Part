@@ -255,9 +255,11 @@ void test_ADDWF_for_the_affected_status_negative_flag(){
                   };
   FSR[code.operand1] = -1;
   FSR[WREG] = -1;
+  FSR[STATUS] = 0;
   addwf(&code);
   TEST_ASSERT_EQUAL(-2,FSR[WREG]);
   TEST_ASSERT_EQUAL(0b00010000,FSR[STATUS]);// - - - N OV Z DC C
+  FSR[STATUS] = 0;
 }
 void test_ADDWF_for_the_affected_status_overflow_flag(){
   Instruction inst = {.mnemonic = ADDWF,.name = "addwf"};	
@@ -271,6 +273,7 @@ void test_ADDWF_for_the_affected_status_overflow_flag(){
   addwf(&code);
   TEST_ASSERT_EQUAL(127,FSR[code.operand1]);
   TEST_ASSERT_EQUAL(0b00001000,FSR[STATUS]);// - - - N OV Z DC C
+  FSR[STATUS] = 0;
 }
 void test_ADDWF_for_the_affected_status_zero_flag(){
   Instruction inst = {.mnemonic = ADDWF,.name = "addwf"};	
@@ -284,6 +287,7 @@ void test_ADDWF_for_the_affected_status_zero_flag(){
   addwf(&code);
   TEST_ASSERT_EQUAL(0,FSR[code.operand1]);
   TEST_ASSERT_EQUAL(0b00000100,FSR[STATUS]);// - - - N OV Z DC C
+  FSR[STATUS] = 0;
 }
 void test_ADDWF_for_the_affected_status_digitCarry_flag(){
   Instruction inst = {.mnemonic = ADDWF,.name = "addwf"};	
@@ -297,6 +301,7 @@ void test_ADDWF_for_the_affected_status_digitCarry_flag(){
   addwf(&code);
   TEST_ASSERT_EQUAL(30,FSR[WREG]);
   TEST_ASSERT_EQUAL(0b00000010,FSR[STATUS]);// - - - N OV Z DC C
+  FSR[STATUS] = 0;
 }
 void test_ADDWF_for_the_affected_status_Carry_flag(){
   Instruction inst = {.mnemonic = ADDWF,.name = "addwf"};	

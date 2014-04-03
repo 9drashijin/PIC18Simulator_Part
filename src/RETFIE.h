@@ -23,6 +23,6 @@ extern char FSR[];
 extern int PC;
 extern int PIC18Stack[32];
 
-void retfie(Bytecode *code);
+int retfie(Bytecode *code);
 
 #endif // RETFIE_H

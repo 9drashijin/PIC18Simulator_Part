@@ -6,17 +6,17 @@
 char FSR[0x1000];
 int TABLE[0x200000];
 
-void tblwt_postinc(Bytecode *code){
+int tblwt_postinc(Bytecode *code){
 	// TBLPTR
 	// 0 = *	no change
 	// 1 = *+	post-increment
 	// 2 = *-	post-decrement
 	// 3 = +*	pre-decrement
+	FSR[TBLPTRU] = (((FSR[TBLPTRU]<<16) + (FSR[TBLPTRH] <<8) + (FSR[TBLPTRL]))+1&0x010000)>>16;
+	FSR[TBLPTRH] = (((FSR[TBLPTRU]<<16) + (FSR[TBLPTRH] <<8) + (FSR[TBLPTRL]))+1&0xFF00)>>8;
+	FSR[TBLPTRL] = (((FSR[TBLPTRU]<<16) + (FSR[TBLPTRH] <<8) + (FSR[TBLPTRL]))+1&0xFF);
 	
-	TABLE[TBLPTR] = ((TABLE[TBLPTRU]<<16) + (TABLE[TBLPTRH] <<8) + (TABLE[TBLPTRL]));
-	TABLE[HOLD] = FSR[TABLAT];
-	TABLE[TBLPTR] = TABLE[TBLPTR]+1;
+	TABLE[((FSR[TBLPTRU]<<16) + (FSR[TBLPTRH] <<8) + (FSR[TBLPTRL]))] = FSR[TABLAT];
 	
-	//printf("tabptr1st: %x\n" , TABLE[TBLPTR]);
-
+	return 0;
 }

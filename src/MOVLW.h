@@ -5,6 +5,6 @@
 
 extern char FSR[];
 
-void movlw(Bytecode *code);
+int movlw(Bytecode *code);
 
 #endif	// __MOVLW_H__

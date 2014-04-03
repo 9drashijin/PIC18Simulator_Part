@@ -6,6 +6,6 @@
 
 extern char FSR[];
 
-void infsnz(Bytecode *code);
+int infsnz(Bytecode *code);
 
 #endif // INFSNZ_H

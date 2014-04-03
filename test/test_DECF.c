@@ -250,9 +250,11 @@ void test_DECF_for_the_affected_status_zero_flag(){
                     .operand3 = 0, 		
                   };
   FSR[code.operand1] = 1;
+  FSR[STATUS] = 0;
   decf(&code);
   TEST_ASSERT_EQUAL(0,FSR[code.operand1]);
   TEST_ASSERT_EQUAL(0b00000100,FSR[STATUS]);// - - - N OV Z DC C
+  FSR[STATUS] = 0;
 }
 void test_DECF_for_the_affected_status_negative_flag(){
   Instruction inst = {.mnemonic = DECF,.name = "decf"};	
@@ -265,6 +267,7 @@ void test_DECF_for_the_affected_status_negative_flag(){
   decf(&code);
   TEST_ASSERT_EQUAL(-1,FSR[WREG]);
   TEST_ASSERT_EQUAL(0b00010000,FSR[STATUS]);// - - - N OV Z DC C
+  FSR[STATUS] = 0;
 }
 void test_DECF_for_the_affected_status_overflow_flag(){
   Instruction inst = {.mnemonic = DECF,.name = "decf"};	
@@ -279,4 +282,18 @@ void test_DECF_for_the_affected_status_overflow_flag(){
   // printf("status: %d",FSR[STATUS]);
   TEST_ASSERT_EQUAL(127,FSR[code.operand1]);
   TEST_ASSERT_EQUAL(0b00001000,FSR[STATUS]);// - - - N OV Z DC C
+  FSR[STATUS] = 0;
+}
+
+void test_DECF_for(){
+  Instruction inst = {.mnemonic = DECF,.name = "decf"};	
+  Bytecode code = { .instruction = &inst,
+                    .operand1 = 0x01,
+                    .operand2 =	F,
+                    .operand3 = ACCESS, 	
+                  };
+  FSR[code.operand1] = 10;
+  decf(&code);
+
+  TEST_ASSERT_EQUAL(9,FSR[code.operand1]);
 }

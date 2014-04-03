@@ -6,6 +6,6 @@
 
 extern char FSR[];
 
-void tstfsz(Bytecode *code);
+int tstfsz(Bytecode *code);
 
 #endif // TSTFSZ_H

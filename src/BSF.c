@@ -19,7 +19,7 @@ char FSR[0x1000];
 */
 
 //Bit Set FileReg
-void bsf(Bytecode *code) {
+int bsf(Bytecode *code) {
 	if (code->operand3 == -1){code->operand3 = ACCESS;}	//default if no value input
 	if(code->operand1 > 0xff || code->operand1 < 0x00){Throw(INVALID_RANGE);}
 	
@@ -58,5 +58,6 @@ void bsf(Bytecode *code) {
 			if(code->operand1 < 0x80){FSR[BSR] = 0x00;}
 			else if(code->operand1 >= 0x80){FSR[BSR] = 0x0F;}
 			FSR[code->operand1 + (FSR[BSR]*256)]; ///(FSR[BSR]*256) same as shift << 8 bit to left, 2^8 is 256.
-		} 
+		}
+	return 0;
 }

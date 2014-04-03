@@ -7,6 +7,6 @@
 extern char FSR[];
 //extern int PIC18Stack[32];
 
-void bsf(Bytecode *code);
+int bsf(Bytecode *code);
 
 #endif	// __BSF_H__

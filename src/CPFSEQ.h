@@ -6,6 +6,6 @@
 
 extern char FSR[];
 
-void cpfseq(Bytecode *code);
+int cpfseq(Bytecode *code);
 
 #endif // CPFSEQ_H

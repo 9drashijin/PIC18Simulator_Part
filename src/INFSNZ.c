@@ -5,7 +5,7 @@
 
 char FSR[0x1000];
 
-void infsnz(Bytecode *code){
+int infsnz(Bytecode *code){
 	if (code->operand2 == -1){code->operand2 = F;}		//default if no value input (empty = -1)
 	if (code->operand3 == -1){code->operand3 = ACCESS;}	//default if no value input
 	
@@ -20,19 +20,19 @@ void infsnz(Bytecode *code){
 		if(code->operand1 < 0x80){
 			FSR[code->operand1] = FSR[code->operand1] += 1;
 			if(FSR[code->operand1] != 0){
-				code->absoluteAddress += 2;	// skip next instruction
+				return 1;//code->absoluteAddress += 2;	// skip next instruction
 			}
 			else if(FSR[code->operand1] == 0){
-				code->absoluteAddress += 1; // continue next instruction
+				return 0;//code->absoluteAddress += 1; // continue next instruction
 			}
 		}
 		else if(code->operand1 >= 0x80){
 			FSR[code->operand1+(0x0F00)] = FSR[code->operand1+(0x0F00)] += 1;
 			if(FSR[code->operand1+(0x0F00)] != 0){
-				code->absoluteAddress += 2;	// skip next instruction
+				return 1;//code->absoluteAddress += 2;	// skip next instruction
 			}
 			else if(FSR[code->operand1+(0x0F00)] == 0){
-				code->absoluteAddress += 1; // continue next instruction
+				return 0;//code->absoluteAddress += 1; // continue next instruction
 			}
 		}
 		}
@@ -40,19 +40,19 @@ void infsnz(Bytecode *code){
 		if(code->operand1 < 0x80){
 			FSR[WREG] = FSR[code->operand1] += 1;
 			if(FSR[WREG] != 0){
-				code->absoluteAddress += 2;	// skip next instruction
+				return 1;//code->absoluteAddress += 2;	// skip next instruction
 			}
 			else if(FSR[WREG] == 0){
-				code->absoluteAddress += 1; // continue next instruction
+				return 0;//code->absoluteAddress += 1; // continue next instruction
 			}
 		}
 		else if(code->operand1 >= 0x80){
 			FSR[WREG+(0x0F00)] = FSR[code->operand1+(0x0F00)] += 1;
 			if(FSR[WREG+(0x0F00)] != 0){
-				code->absoluteAddress += 2;	// skip next instruction
+				return 1;//code->absoluteAddress += 2;	// skip next instruction
 			}
 			else if(FSR[WREG+(0x0F00)] == 0){
-				code->absoluteAddress += 1; // continue next instruction
+				return 0;//code->absoluteAddress += 1; // continue next instruction
 			}
 		}
 		}

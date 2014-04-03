@@ -9,6 +9,6 @@ extern char FSR[];
 extern int PC;
 extern int PIC18Stack[32];
 
-void bn(Bytecode *code);
+int bn(Bytecode *code);
 
 #endif // BN_H

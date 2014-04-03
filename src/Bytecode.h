@@ -13,25 +13,25 @@ typedef enum {ACCESS = -5,
 			  } SyntaxError; // empty ==-1
 
 typedef enum 	{
-					ADDWF, 	//
-					CPFSEQ, //
-					DECF,	//
-					INFSNZ,	//
+					ADDWF, 	// --
+					CPFSEQ, // --
+					DECF,	// --
+					INFSNZ,	// --
 					MOVWF,
 					RLNCF,
 					SUBFWB,
-					TSTFSZ,	//
-					BSF,	//
+					TSTFSZ,	// --
+					BSF,	// --
 					BTFSS,
-					BN,		//
+					BN,		// --
 					BNZ,
 					CALL,
 					NOP,
 					RETFIE,	//
 					ANDLW,
-					MOVLW,	//
+					MOVLW,	// --
 					XORLW,
-					TBLWT_POSTINC, //*+
+					TBLWT_POSTINC, //*+ --
 					TBLRD_PREINC //+*
 				} Mnemonic;
 				

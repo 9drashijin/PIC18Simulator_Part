@@ -14,9 +14,8 @@
 #define		HOLD	0xF9C
 
 extern char FSR[];
-extern int PIC18Stack[32];
-extern int TABLE[0x200000];
+extern int TABLE[];
 
-void tblwt_postinc(Bytecode *code);
+int tblwt_postinc(Bytecode *code);
 
 #endif // TBLWT_POSTINC_H
