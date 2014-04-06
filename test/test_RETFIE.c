@@ -105,3 +105,26 @@ void test_RETFIE_given_both_operand1_exceeded_the_valid_range_of_0xFF_and_should
 		TEST_ASSERT_EQUAL(INVALID_RANGE,errorRange);
 	}
 }
+void test_RETFIE_return_TOS(){
+	Instruction inst = {.mnemonic = RETFIE,.name = "retfie"};	
+	Bytecode code = {.instruction = &inst,
+					 .operand1 = 0xA5,
+					 .operand2 = 0,		//selected 0
+					 .operand3 = -1,	//empty
+					};
+	FSR[WREG] 	= 100;	//hex	 0x64
+	FSR[STATUS] = 16;	//binary 00010000
+	FSR[BSR]	= 5;
+	
+	FSR[TOSU] = 0x11;
+	FSR[TOSH] = 0x11;
+	FSR[TOSL] = 0x12;
+	
+	retfie(&code);
+	TEST_ASSERT_EQUAL(100,FSR[WREG]);
+	TEST_ASSERT_EQUAL(16,FSR[STATUS]);
+	TEST_ASSERT_EQUAL(5,FSR[BSR]);
+	TEST_ASSERT_EQUAL(0,FSR[INTCON]);	// GIE disabled
+	
+	TEST_ASSERT_EQUAL_HEX32(0x111112,retfie(&code));
+}

@@ -37,7 +37,7 @@ char FSR[0x1000];
 int addwf(Bytecode *code) {
 	if (code->operand2 == -1){code->operand2 = F;}		//default if no value input (empty = -1)
 	if (code->operand3 == -1){code->operand3 = ACCESS;}	//default if no value input
-	if(code->operand1 > 0xff || code->operand1 < 0x00){Throw(INVALID_RANGE);}
+	if(code->operand1 > 0xfff || code->operand1 < 0x00){Throw(INVALID_RANGE);}
 	else{
 		int temp1 = FSR[code->operand1];
 		int temp2 = FSR[code->operand1+(0x0F00)];
@@ -49,6 +49,7 @@ int addwf(Bytecode *code) {
 			else if(FSR[code->operand1] == 0)		{FSR[STATUS] = FSR[STATUS] | 0b00000100;}
 			else if(FSR[code->operand1] > 0x0F)		{FSR[STATUS] = FSR[STATUS] | 0b00000010;}
 			else if(FSR[code->operand1] > 0xFF)		{FSR[STATUS] = FSR[STATUS] | 0b00000001;}
+			return code->absoluteAddress +=1;
 			}
 			else if(code->operand1 >= 0x80){
 			FSR[code->operand1+(0x0F00)] = FSR[code->operand1+(0x0F00)] + FSR[WREG];
@@ -57,6 +58,7 @@ int addwf(Bytecode *code) {
 			else if(FSR[code->operand1+(0x0F00)] == 0)			{FSR[STATUS] = FSR[STATUS] | 0b00000100;}
 			else if(FSR[code->operand1+(0x0F00)] > 0x0F)		{FSR[STATUS] = FSR[STATUS] | 0b00000010;}
 			else if(FSR[code->operand1+(0x0F00)] > 0xFF)		{FSR[STATUS] = FSR[STATUS] | 0b00000001;}
+			return code->absoluteAddress +=1;
 			}
 		}
 		else if (code->operand2 == 0 || code->operand2 == W){
@@ -67,6 +69,7 @@ int addwf(Bytecode *code) {
 			else if(FSR[WREG] == 0)			{FSR[STATUS] = FSR[STATUS] | 0b00000100;}
 			else if(FSR[WREG] > 0x0F)		{FSR[STATUS] = FSR[STATUS] | 0b00000010;}
 			else if(FSR[WREG] > 0xFF)		{FSR[STATUS] = FSR[STATUS] | 0b00000001;}
+			return code->absoluteAddress +=1;
 			}
 			else if(code->operand1 >= 0x80){
 			FSR[WREG+(0x0F00)] = FSR[code->operand1+(0x0F00)] + FSR[WREG];
@@ -75,6 +78,7 @@ int addwf(Bytecode *code) {
 			else if(FSR[WREG] == 0)			{FSR[STATUS] = FSR[STATUS] | 0b00000100;}
 			else if(FSR[WREG] > 0x0F)		{FSR[STATUS] = FSR[STATUS] | 0b00000010;}
 			else if(FSR[WREG] > 0xFF)		{FSR[STATUS] = FSR[STATUS] | 0b00000001;}
+			return code->absoluteAddress +=1;
 			}
 		}
 		else if (code->operand2 == BANKED || code->operand2 == ACCESS ){Throw(INVALID_OPERAND);}		// operand 2 with ACCESS or BANKED
@@ -89,7 +93,7 @@ int addwf(Bytecode *code) {
 			FSR[code->operand1 + (FSR[BSR]*256)]; ///(FSR[BSR]*256) same as shift << 8 bit to left, 2^8 is 256.
 		}
 	}
-	return 0;
+	return code->absoluteAddress +=1;
 }
 
 

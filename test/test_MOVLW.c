@@ -147,3 +147,14 @@ void test_MOVLW_given_operand2_and_3_with_F_and_BANKED_should_catch_error_invali
   TEST_ASSERT_EQUAL(-4,BANKED);
   TEST_ASSERT_EQUAL(-3,F);
 }
+void test_MOVLW_with_absoluteAddress() {
+  Instruction inst = {.mnemonic = MOVLW,.name = "movlw"};	
+  Bytecode code = { .instruction = &inst,
+                    .operand1 = 0x5A, 
+                    .operand2 =	-1, 
+                    .operand3 = -1					
+                  };
+  movlw(&code);
+  TEST_ASSERT_EQUAL_HEX8(0x5A, FSR[WREG]);
+  TEST_ASSERT_EQUAL(1,code.absoluteAddress);
+}

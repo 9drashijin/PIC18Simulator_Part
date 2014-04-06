@@ -21,7 +21,7 @@ char FSR[0x1000];
 //Bit Set FileReg
 int bsf(Bytecode *code) {
 	if (code->operand3 == -1){code->operand3 = ACCESS;}	//default if no value input
-	if(code->operand1 > 0xff || code->operand1 < 0x00){Throw(INVALID_RANGE);}
+	if(code->operand1 > 0xfff || code->operand1 < 0x00){Throw(INVALID_RANGE);}
 	
 	if(code->operand1 < 0x80){
 		switch (code->operand2 ){
@@ -35,6 +35,7 @@ int bsf(Bytecode *code) {
 		case 7: FSR[code->operand1] = FSR[code->operand1] | 0b10000000; break;	// 128
 			default: FSR[code->operand1] = 0b00000000;  break;
 		}
+		return code->absoluteAddress +=1;
 	}
 	else if(code->operand1 >= 0x80){
 		switch (code->operand2 ){
@@ -48,6 +49,7 @@ int bsf(Bytecode *code) {
 		case 7: FSR[code->operand1+(0x0F00)] = FSR[code->operand1+(0x0F00)] | 0b10000000; break;	// 128
 			default: FSR[code->operand1+(0x0F00)] = 0b00000000;  break;
 		}
+		return code->absoluteAddress +=1;
 	}
 	if (code->operand3 == W || code->operand3 == F){Throw(INVALID_OPERAND);}					// operand 3 with WREG or FileReg
 	else if (code->operand3 <-5 || code->operand3 >1){Throw(INVALID_OPERAND);}
@@ -59,5 +61,5 @@ int bsf(Bytecode *code) {
 			else if(code->operand1 >= 0x80){FSR[BSR] = 0x0F;}
 			FSR[code->operand1 + (FSR[BSR]*256)]; ///(FSR[BSR]*256) same as shift << 8 bit to left, 2^8 is 256.
 		}
-	return 0;
+	return code->absoluteAddress +=1;
 }

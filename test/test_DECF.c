@@ -92,8 +92,7 @@ void test_DECF_given_the_operand3_set_to_1_and_should_decrement_the_value_in_Fil
   // printf("code.operand1 + (FSR[BSR]<<8) :%#x\n",code.operand1 + (FSR[BSR]<<8));		// <<8 shift left 8 same as *256
   
   TEST_ASSERT_EQUAL_HEX8(88,FSR[code.operand1]);			//The Decremented value is 87 but store in WREG not in FileReg, thus the value in here still 88
-  TEST_ASSERT_EQUAL(87,FSR[WREG]);							//The Decremented value is 87 and the value store in WREG, with the operand 1 set to 0
-  TEST_ASSERT_EQUAL_HEX8(0x00,FSR[BSR]);					//The selected BSR is bank 10 but the operand is below 80 thus put to default 0x00
+  TEST_ASSERT_EQUAL(87,FSR[WREG]);							//The Decremented value is 87 and the value store in WREG, with the operand 1 set to 0			
   TEST_ASSERT_EQUAL_HEX8(0xA01,code.operand1);				//The selected BSR is bank 10 which start from 0x0A followed by the Opcode Address 5F
   FSR[WREG] = 0; 	//clear the WREG to 0
 }
@@ -122,7 +121,6 @@ void test_DECF_given_the_operand3_set_to_1_and_should_decrement_the_value_in_Fil
   //THE WREG IS CLEARED to 0 and operand1 is set to 1, the result is stored in FileREG not WREG thus the result should be 0
   TEST_ASSERT_EQUAL(0b1110,FSR[code.operand1+(0x0F00)]);			//The Decremented value is 1110 and the value store in FileReg, with the operand 1 set to 1
   TEST_ASSERT_EQUAL(0,FSR[WREG]);									//The Decremented value is 1110 but store in FileReg not in WREG, thus the value in here still 0
-  TEST_ASSERT_EQUAL_HEX8(0x0F,FSR[BSR]);							//The selected BSR is bank 13 but the operand1 is over 80 thus put to default 0x0F
   TEST_ASSERT_EQUAL_HEX8(0xDE1,code.operand1);		//The selected BSR is bank 13 last bank which start from 0x0D followed by the Opcode Address E1
 }
 void test_DECF_invalid_range() {
@@ -285,7 +283,7 @@ void test_DECF_for_the_affected_status_overflow_flag(){
   FSR[STATUS] = 0;
 }
 
-void test_DECF_for(){
+void test_DECF_for_absoluteAddress(){
   Instruction inst = {.mnemonic = DECF,.name = "decf"};	
   Bytecode code = { .instruction = &inst,
                     .operand1 = 0x01,
@@ -296,4 +294,5 @@ void test_DECF_for(){
   decf(&code);
 
   TEST_ASSERT_EQUAL(9,FSR[code.operand1]);
+  TEST_ASSERT_EQUAL(1,code.absoluteAddress);
 }

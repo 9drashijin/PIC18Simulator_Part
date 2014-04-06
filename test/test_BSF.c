@@ -229,7 +229,6 @@ void test_BSF_given_the_operand3_set_to_1_and_should_set_the_fifth_bit_to_1_with
   TEST_ASSERT_EQUAL_HEX8(0x9B, FSR[code.operand1]);					//ADDRESS of FileREg is at 0x9B
 
   TEST_ASSERT_EQUAL_HEX8(0xB9,code.operand1);						//The Address of FileReg Operand1 is B9 = 185 in decimal
-  TEST_ASSERT_EQUAL_HEX8(0x0F,FSR[BSR]);							//The selected BSR is bank 8 but operand1 more than 80 thus default to 0x0f
   TEST_ASSERT_EQUAL_HEX8(0x8B9,code.operand1 + (FSR[BSR]<<8));		//The selected BSR is bank 8 last bank which start from 0x08 followed by the Opcode Address B9
 }
 
@@ -259,7 +258,6 @@ void test_BSF_given_the_operand3_set_to_1_should_set_the_seventh_bit_to_1_with_t
   TEST_ASSERT_EQUAL_HEX8(0x6c, FSR[code.operand1]);					//ADDRESS of FileREg is at 0x6C
 
   TEST_ASSERT_EQUAL_HEX8(0xFC,code.operand1);						//The Address of FileReg Operand1 is FC = 252 in decimal
-  TEST_ASSERT_EQUAL_HEX8(0x0F,FSR[BSR]);							//The selected BSR is bank 5 but operand1 more than 80 thus default to 0x0f
   TEST_ASSERT_EQUAL_HEX8(0x5FC,code.operand1 + (FSR[BSR]<<8));		//The selected BSR is bank 5 last bank which start from 0x05 followed by the Opcode Address FC
   
   //test for other value
@@ -364,4 +362,18 @@ void test_BSF_given_the_operand2_and_operand3_with_invalid_input_should_catch_er
   Catch(errorRange){
 	TEST_ASSERT_EQUAL(INVALID_OPERAND,errorRange);
   }
+}
+void test_BSF_with_absoluteAddress(){
+  Instruction inst = {.mnemonic = BSF,.name = "bsf"};	
+  Bytecode code = { .instruction = &inst,
+                    .operand1 = 0x5A,
+                    .operand2 =	0,
+                    .operand3 = ACCESS,
+					};
+  FSR[code.operand1] = 0x6C; //0b01101100
+  bsf(&code);
+  TEST_ASSERT_EQUAL(0b01101101, FSR[code.operand1]);
+  TEST_ASSERT_EQUAL(109, FSR[code.operand1]);
+  TEST_ASSERT_EQUAL_HEX8(0x6D, FSR[code.operand1]);
+  TEST_ASSERT_EQUAL(1,code.absoluteAddress);
 }

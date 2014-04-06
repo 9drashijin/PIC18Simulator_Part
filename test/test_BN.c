@@ -19,8 +19,8 @@ void test_BN_given_STATUS_is_zero_and_should_not_branch_but_skip_the_next_instru
 	bn(&code);		
 	//printf("absoluteAddress: %d",code.absoluteAddress);
 	
-	//TEST_ASSERT_EQUAL(2,code.absoluteAddress);
-	TEST_ASSERT_EQUAL(1,bn(&code));
+	TEST_ASSERT_EQUAL(2,code.absoluteAddress);
+	//TEST_ASSERT_EQUAL(1,bn(&code));
 }
 void test_BN_given_STATUS_is_one_and_should_branch(){
 	Instruction inst = {.mnemonic = BN,.name = "bn"};	
@@ -34,8 +34,8 @@ void test_BN_given_STATUS_is_one_and_should_branch(){
 	bn(&code);		
 //	printf("absoluteAddress: %d",code.absoluteAddress);
 	
-	//TEST_ASSERT_EQUAL(100,code.absoluteAddress);
-	TEST_ASSERT_EQUAL(1,bn(&code));
+	TEST_ASSERT_EQUAL(100,code.absoluteAddress);
+	//TEST_ASSERT_EQUAL(1,bn(&code));
 }
 void test_BN_given_both_operand1_and_2_is_empty_should_throw_error(){
 	Instruction inst = {.mnemonic = BN,.name = "bn"};	
@@ -48,8 +48,8 @@ void test_BN_given_both_operand1_and_2_is_empty_should_throw_error(){
 	CException errorRange;
 	Try{
 		bn(&code);		
-		//TEST_ASSERT_EQUAL(100,code.absoluteAddress);
-		TEST_ASSERT_EQUAL(1,bn(&code));
+		TEST_ASSERT_EQUAL(100,code.absoluteAddress);
+		//TEST_ASSERT_EQUAL(1,bn(&code));
 	}
 	Catch(errorRange){
 		TEST_ASSERT_EQUAL(INVALID_OPERAND,errorRange);
@@ -66,8 +66,8 @@ void test_BN_given_both_operand1_and_2_have_value_and_should_throw_error(){
 	CException errorRange;
 	Try{
 		bn(&code);		
-		//TEST_ASSERT_EQUAL(100,code.absoluteAddress);
-		TEST_ASSERT_EQUAL(1,bn(&code));
+		TEST_ASSERT_EQUAL(100,code.absoluteAddress);
+		//TEST_ASSERT_EQUAL(1,bn(&code));
 	}
 	Catch(errorRange){
 		TEST_ASSERT_EQUAL(INVALID_OPERAND,errorRange);
@@ -84,8 +84,8 @@ void test_BN_given_both_operand1_and_2_exceeded_the_valid_range_of_negative_128_
 	CException errorRange;
 	Try{
 		bn(&code);		
-		//TEST_ASSERT_EQUAL(100,code.absoluteAddress);
-		TEST_ASSERT_EQUAL(1,bn(&code));
+		TEST_ASSERT_EQUAL(100,code.absoluteAddress);
+		//TEST_ASSERT_EQUAL(1,bn(&code));
 	}
 	Catch(errorRange){
 		TEST_ASSERT_EQUAL(INVALID_RANGE,errorRange);
@@ -102,8 +102,8 @@ void test_BN_given_both_operand1_exceeded_the_valid_range_of_0xFF_and_should_thr
 	CException errorRange;
 	Try{
 		bn(&code);		
-		//TEST_ASSERT_EQUAL(100,code.absoluteAddress);
-		TEST_ASSERT_EQUAL(1,bn(&code));
+		TEST_ASSERT_EQUAL(100,code.absoluteAddress);
+		//TEST_ASSERT_EQUAL(1,bn(&code));
 	}
 	Catch(errorRange){
 		TEST_ASSERT_EQUAL(INVALID_RANGE,errorRange);

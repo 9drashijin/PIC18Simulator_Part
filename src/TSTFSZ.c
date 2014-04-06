@@ -14,13 +14,13 @@ int tstfsz(Bytecode *code){
 	if (code->operand3 <-5 || code->operand3 >1){Throw(INVALID_OPERAND);}
 	else if (code->operand3 == W || code->operand3 == F){Throw(INVALID_OPERAND);}
 	
-	if (code->operand1 > 0xff || code->operand1 < 0x00){Throw(INVALID_RANGE);}// error range of input
+	if (code->operand1 > 0xfff || code->operand1 < 0x00){Throw(INVALID_RANGE);}// error range of input
 	else{
 		if(FSR[code->operand1] == 0){
-			return 1;//code->absoluteAddress += 2;	// skip next instruction
+			return code->absoluteAddress += 2;	// skip next instruction
 		}
 		else{
-			return 0;//code->absoluteAddress += 1; // continue next instruction
+			return code->absoluteAddress += 1; // continue next instruction
 		}
 		if (code->operand3 == 1 || code->operand3 == BANKED){
 			if(FSR[BSR] > 15 || FSR[BSR]<0){FSR[BSR] = 0;Throw(INVALID_BSR);}

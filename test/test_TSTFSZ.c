@@ -17,8 +17,8 @@ void test_TSTFSZ_should_test_and_skip_if_FileReg_is_zero(){
   FSR[code.operand1] = 0;	//zero
   tstfsz(&code);
   TEST_ASSERT_EQUAL(0,FSR[code.operand1]);
-  //TEST_ASSERT_EQUAL(2,code.absoluteAddress);
-  TEST_ASSERT_EQUAL(1,tstfsz(&code));
+  TEST_ASSERT_EQUAL(2,code.absoluteAddress);
+  //TEST_ASSERT_EQUAL(1,tstfsz(&code));
 }
 void test_TSTFSZ_should_test_and_should_not_skip_if_FileReg_is_not_zero(){
 	Instruction inst = {.mnemonic = TSTFSZ,.name = "tstfsz"};	
@@ -30,8 +30,8 @@ void test_TSTFSZ_should_test_and_should_not_skip_if_FileReg_is_not_zero(){
   FSR[code.operand1] = 1;	//not zero
   tstfsz(&code);
   TEST_ASSERT_EQUAL(1,FSR[code.operand1]);
-  //TEST_ASSERT_EQUAL(1,code.absoluteAddress);
-  TEST_ASSERT_EQUAL(0,tstfsz(&code));
+  TEST_ASSERT_EQUAL(1,code.absoluteAddress);
+  //TEST_ASSERT_EQUAL(0,tstfsz(&code));
 }
 void test_TSTFSZ_should_test_and_skip_if_FileReg_is_zero_with_BSR_selected(){
 	Instruction inst = {.mnemonic = TSTFSZ,.name = "tstfsz"};	
@@ -44,10 +44,10 @@ void test_TSTFSZ_should_test_and_skip_if_FileReg_is_zero_with_BSR_selected(){
   FSR[BSR] = 13;
   tstfsz(&code);
   TEST_ASSERT_EQUAL(0,FSR[code.operand1]);
- // TEST_ASSERT_EQUAL(2,code.absoluteAddress);
+  TEST_ASSERT_EQUAL(2,code.absoluteAddress);
   TEST_ASSERT_EQUAL_HEX8(0x0D,FSR[BSR]);
   TEST_ASSERT_EQUAL_HEX8(0xFFA,code.operand1);
-  TEST_ASSERT_EQUAL(1,tstfsz(&code));
+  //TEST_ASSERT_EQUAL(1,tstfsz(&code));
 }
 void test_TSTFSZ_with_operand2_not_empty_and_should_replace_to_operand3_which_is_empty(){
   Instruction inst = {.mnemonic = TSTFSZ,.name = "tstfsz"};	
@@ -59,8 +59,8 @@ void test_TSTFSZ_with_operand2_not_empty_and_should_replace_to_operand3_which_is
   FSR[code.operand1] = 0;
   tstfsz(&code);
   TEST_ASSERT_EQUAL(0,FSR[code.operand1]);
-  //TEST_ASSERT_EQUAL(2,code.absoluteAddress);
-  TEST_ASSERT_EQUAL(1,tstfsz(&code));
+  TEST_ASSERT_EQUAL(2,code.absoluteAddress);
+  //TEST_ASSERT_EQUAL(1,tstfsz(&code));
 }
 void test_TSTFSZ_with_operand2_not_empty_and_should_throw_ERROR_if_operand3_already_have_value(){
   Instruction inst = {.mnemonic = TSTFSZ,.name = "tstfsz"};	
@@ -74,8 +74,8 @@ void test_TSTFSZ_with_operand2_not_empty_and_should_throw_ERROR_if_operand3_alre
   Try{
 	tstfsz(&code);
 	TEST_ASSERT_EQUAL(1,FSR[code.operand1]);
-	//TEST_ASSERT_EQUAL(1,code.absoluteAddress);
-	TEST_ASSERT_EQUAL(0,tstfsz(&code));
+	TEST_ASSERT_EQUAL(1,code.absoluteAddress);
+	//TEST_ASSERT_EQUAL(0,tstfsz(&code));
   }
   Catch(errorRange){
 	TEST_ASSERT_EQUAL(INVALID_OPERAND,errorRange);
@@ -122,9 +122,9 @@ void test_TSTFSZ_given_the_operand1_value_less_than_0x80_and_should_test_FileReg
   FSR[code.operand1] = 0;
   tstfsz(&code);
   TEST_ASSERT_EQUAL(0,FSR[code.operand1]);
- // TEST_ASSERT_EQUAL(2,code.absoluteAddress);
+  TEST_ASSERT_EQUAL(2,code.absoluteAddress);
   TEST_ASSERT_EQUAL_HEX8(0x001,code.operand1);
-  TEST_ASSERT_EQUAL(1,tstfsz(&code));
+  //TEST_ASSERT_EQUAL(1,tstfsz(&code));
 }
 void test_TSTFSZ_given_the_operand2_and_operand3_with_invalid_input_should_catch_an_error(){
   Instruction inst = {.mnemonic = TSTFSZ,.name = "tstfsz"};
@@ -138,8 +138,8 @@ void test_TSTFSZ_given_the_operand2_and_operand3_with_invalid_input_should_catch
   Try{
 	tstfsz(&code);
 	TEST_ASSERT_EQUAL(0,FSR[code.operand1]);
-	//TEST_ASSERT_EQUAL(2,code.absoluteAddress);
-	TEST_ASSERT_EQUAL(1,tstfsz(&code));
+	TEST_ASSERT_EQUAL(2,code.absoluteAddress);
+	//TEST_ASSERT_EQUAL(1,tstfsz(&code));
   }
   Catch(errorRange){
 	TEST_ASSERT_EQUAL(INVALID_OPERAND,errorRange);

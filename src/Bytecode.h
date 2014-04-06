@@ -14,16 +14,16 @@ typedef enum {ACCESS = -5,
 
 typedef enum 	{
 					ADDWF, 	// --
-					CPFSEQ, // --
+					CPFSEQ, // 
 					DECF,	// --
-					INFSNZ,	// --
+					INFSNZ,	// 
 					MOVWF,
 					RLNCF,
 					SUBFWB,
-					TSTFSZ,	// --
+					TSTFSZ,	// 
 					BSF,	// --
 					BTFSS,
-					BN,		// --
+					BN,		// 
 					BNZ,
 					CALL,
 					NOP,
@@ -31,7 +31,7 @@ typedef enum 	{
 					ANDLW,
 					MOVLW,	// --
 					XORLW,
-					TBLWT_POSTINC, //*+ --
+					TBLWT_POSTINC, //*+ 
 					TBLRD_PREINC //+*
 				} Mnemonic;
 				

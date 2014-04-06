@@ -316,3 +316,16 @@ void test_ADDWF_for_the_affected_status_Carry_flag(){
   TEST_ASSERT_EQUAL(0,FSR[code.operand1]);
   //TEST_ASSERT_EQUAL(0b00000001,FSR[STATUS]);// over 0xFF > become 0
 }
+void test_ADDWF_with_absoluteAddress(){
+  Instruction inst = {.mnemonic = ADDWF,.name = "addwf"};	
+  Bytecode code = { .instruction = &inst,
+                    .operand1 = 0x01,
+                    .operand2 =	1,		
+                    .operand3 = 0,
+                  };
+  FSR[code.operand1] = 10;
+  FSR[WREG]			 = 20;
+  addwf(&code);
+  TEST_ASSERT_EQUAL(30,FSR[code.operand1]);
+  TEST_ASSERT_EQUAL(1,code.absoluteAddress);
+}

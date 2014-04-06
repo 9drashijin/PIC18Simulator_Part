@@ -18,5 +18,5 @@ int tblwt_postinc(Bytecode *code){
 	
 	TABLE[((FSR[TBLPTRU]<<16) + (FSR[TBLPTRH] <<8) + (FSR[TBLPTRL]))] = FSR[TABLAT];
 	
-	return 0;
+	return code->absoluteAddress += 1;
 }

@@ -18,7 +18,7 @@ char FSR[0x1000];
 int decf(Bytecode *code) {
 	if (code->operand2 == -1){code->operand2 = F;}		//default if no value input (empty = -1)
 	if (code->operand3 == -1){code->operand3 = ACCESS;}	//default if no value input //(code->operand1 < 0xf80 && code->operand1 > 0xfff)
-	if(code->operand1 > 0xff || code->operand1 < 0x00){Throw(INVALID_RANGE);}// error range of input 
+	if(code->operand1 > 0xfff || code->operand1 < 0x00){Throw(INVALID_RANGE);}// error range of input 
 	else{
 		int temp1 = FSR[code->operand1];
 		int temp2 = FSR[code->operand1+(0x0F00)];
@@ -28,12 +28,14 @@ int decf(Bytecode *code) {
 				if(FSR[code->operand1] <= -1)			 {FSR[STATUS] = FSR[STATUS] | 0b00010000;} // 0 0 0 0 0  0 0  0
 				else if(FSR[code->operand1] == ~(temp1)) {FSR[STATUS] = FSR[STATUS] | 0b00001000;} // - - - N OV Z DC C
 				else if(FSR[code->operand1] == 0)		 {FSR[STATUS] = FSR[STATUS] | 0b00000100;}
+				return code->absoluteAddress +=1;
 			}
 			else if(code->operand1 >= 0x80){
 			FSR[code->operand1+(0x0F00)] = (FSR[code->operand1+(0x0F00)])-1;
 				if(FSR[code->operand1+(0x0F00)] <= -1)			 {FSR[STATUS] = FSR[STATUS] | 0b00010000;}
 				else if(FSR[code->operand1+(0x0F00)] == ~(temp2)){FSR[STATUS] = FSR[STATUS] | 0b00001000;} //overflow occurs when (+A)+(+B)=−C or (−A)+(−B)=+C
-				else if(FSR[code->operand1+(0x0F00)] == 0)		 {FSR[STATUS] = FSR[STATUS] | 0b00000100;} 	
+				else if(FSR[code->operand1+(0x0F00)] == 0)		 {FSR[STATUS] = FSR[STATUS] | 0b00000100;}
+				return code->absoluteAddress +=1;
 			}
 		}
 		else if (code->operand2 == 0 || code->operand2 == W){
@@ -42,12 +44,14 @@ int decf(Bytecode *code) {
 				if(FSR[WREG] <= -1)				{FSR[STATUS] = FSR[STATUS] | 0b00010000;} // - - - N OV Z DC C
 				else if(FSR[WREG] == ~(temp1))	{FSR[STATUS] = FSR[STATUS] | 0b00001000;}
 				else if(FSR[WREG] == 0)			{FSR[STATUS] = FSR[STATUS] | 0b00000100;}
+				return code->absoluteAddress +=1;
 			}
 			else if(code->operand1 >= 0x80){
 			FSR[WREG+(0x0F00)] = ((FSR[code->operand1+(0x0F00)])-1);
 				if(FSR[WREG+(0x0F00)] <= -1)			{FSR[STATUS] = FSR[STATUS] | 0b00010000;}
 				else if(FSR[WREG+(0x0F00)] == ~(temp2))	{FSR[STATUS] = FSR[STATUS] | 0b00001000;}
 				else if(FSR[WREG+(0x0F00)] == 0)		{FSR[STATUS] = FSR[STATUS] | 0b00000100;}
+				return code->absoluteAddress +=1;
 			}
 		}//(ACCESS=-5,BANKED=-4,F=-3,W=-2,empty=-1)
 		else if (code->operand2 == BANKED || code->operand2 == ACCESS ){Throw(INVALID_OPERAND);}		// operand 2 with ACCESS or BANKED
@@ -62,5 +66,5 @@ int decf(Bytecode *code) {
 			FSR[code->operand1 + (FSR[BSR]*256)]; ///(FSR[BSR]*256) same as shift << 8 bit to left, 2^8 is 256.
 		} 
 	}
-	return 0;
+	return code->absoluteAddress +=1;
 }
