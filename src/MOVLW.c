@@ -7,10 +7,10 @@ char FSR[0x1000];
 //WREG 	= 0xFE8
 
 /**	
-  *	Name	: Move Literal to WREG
-  * Input 	: k ( operand1 )
-  *	Output 	: The 8-bit literal k is loaded into WREG
-  *
+  *	Name		: Move Literal to WREG
+  * Input 		: k ( operand1 ), 0 < k < 255
+  *	Output 		: The 8-bit literal k is loaded into WREG
+  * Operation	: k → W
 */
 
 //Move Literal to WREG

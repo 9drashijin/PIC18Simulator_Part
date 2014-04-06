@@ -5,6 +5,15 @@
 
 char FSR[0x1000];
 
+/**	
+  *	Name		: Compare f with W, Skip if f = W
+  * Input 		: f {,a} , 0 < f < 255
+  *	Output 		: skip next instruction if equal, to absoluteAddress
+  * Operation	: (f) – (W),
+  *			      skip if (f) = (W)
+  *				  (unsigned comparison)
+*/
+
 int cpfseq(Bytecode *code){
 	if (code->operand2 != -1 && code->operand3 ==-1 ){code->operand3 = code->operand2;} //if operand2 not empty and operand3 empty then replace value of operand2 to 3
 	else if (code->operand2 == -1 && code->operand3 == -1){code->operand3 = ACCESS;}	//default if no value input

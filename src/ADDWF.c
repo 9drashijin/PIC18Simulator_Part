@@ -7,10 +7,11 @@ char FSR[0x1000];
 //WREG 	= 0xFE8
 
 /**	
-  *	Name	: Add WREG to f
-  * Input 	: f{,d{,a}}
-  *	Output 	: d = 0, STORED in WREG
-  *			  d = 1, STORED in fileReg
+  *	Name		: Add WREG to f
+  * Input 		: f{,d{,a}}
+  *	Output 		: d = 0, STORED in WREG
+  *				  d = 1, STORED in fileReg
+  * Operation	: f + W => dest
   *
 */
 /**

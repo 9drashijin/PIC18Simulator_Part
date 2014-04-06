@@ -4,14 +4,18 @@
 #include "CException.h"
 
 char FSR[0x1000];
-/**
-*	(TOS) → PC,
-*	1 → GIE/GIEH or PEIE/GIEL;
-*	if s = 1,
-*	(WS) → W,
-*	(STATUSS) → STATUS,
-*	(BSRS) → BSR,
-*	PCLATU, PCLATH are unchanged
+/**	
+  *	Name		: Return from Interrupt
+  * Input 		: operand 0 or 1
+  *	Output 		: Interrupts GIE are enabled or disabled
+  * Operation	: (TOS) → PC,
+  *				  1 → GIE/GIEH or PEIE/GIEL;
+  *				  if s = 1,
+  *				  (WS) → W,
+  *				  (STATUSS) → STATUS,
+  *				  (BSRS) → BSR,
+  *				  PCLATU, PCLATH are unchanged
+  *	
 **/
 
 int retfie(Bytecode *code){	//check for error first, if occur straight throw exception

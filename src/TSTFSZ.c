@@ -5,6 +5,14 @@
 
 char FSR[0x1000];
 
+/**	
+  *	Name		: Test f, Skip if 0
+  * Input 		: f {,a} 0 < f < 255
+  *	Output 		: skip next instruction if F is 0 to absoluteAddress
+  * Operation	: skip if f = 0
+*/
+
+
 int tstfsz(Bytecode *code){
 	if 		(code->operand2 != -1 && code->operand3 ==-1 ){code->operand3 = code->operand2;} //if operand2 not empty and operand3 empty then replace value of operand2 to 3
 	else if (code->operand2 == -1 && code->operand3 == -1){code->operand3 = ACCESS;}	//default if no value input

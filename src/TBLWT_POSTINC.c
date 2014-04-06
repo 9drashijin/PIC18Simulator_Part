@@ -6,6 +6,16 @@
 char FSR[0x1000];
 int TABLE[0x200000];
 
+/**	
+  *	Name		: Table Write post-increment
+  * Input 		: tblwt_postinc
+  *	Output 		: store in holding register then table pointer +1
+  * Operation	: if TBLWT*+,
+  *  			  (TABLAT) → Holding Register,
+  *				  (TBLPTR) + 1 → TBLPTR;
+*/
+
+
 int tblwt_postinc(Bytecode *code){
 	// TBLPTR
 	// 0 = *	no change

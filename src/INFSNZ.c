@@ -5,6 +5,15 @@
 
 char FSR[0x1000];
 
+/**	
+  *	Name		: Increment f, Skip if Not 0
+  * Input 		: f{,d{,a}}
+  *	Output 		: d = 0, STORED in WREG
+  *			 	  d = 1, STORED in fileReg
+  * Operation	: (f) + 1 → dest,
+				  skip if result not 0
+*/
+
 int infsnz(Bytecode *code){
 	if (code->operand2 == -1){code->operand2 = F;}		//default if no value input (empty = -1)
 	if (code->operand3 == -1){code->operand3 = ACCESS;}	//default if no value input

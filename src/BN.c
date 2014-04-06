@@ -6,6 +6,15 @@
 char FSR[0x1000];
 int PC;
 
+/**	
+  *	Name		: Branch if Negative
+  * Input 		: -128 < n < 127
+  *	Output 		: branch to absoluteAddress
+  * Operation	: if Carry bit is ‘1’,
+  *				  (PC) + 2 + 2n → PC
+  *
+*/
+
 /**	10	 
 *	15	here	bn  there
 *	20	there

@@ -12,10 +12,10 @@ char FSR[0x1000];
 //WREG 	= 0xFE8
 
 /**	
-  *	Name	: Bit Set f
-  * Input 	: f{,d{,a}}
-  *	Output 	: d = (0~7), Set bit 0 to 7
-  *
+  *	Name		: Bit Set f
+  * Input 		: f{,d{,a}} ,0 < f < 255, 0 < b < 7
+  *	Output 		: d = (0~7), Set bit 0 to 7
+  * Operation	: 1 → f<b>
 */
 
 //Bit Set FileReg

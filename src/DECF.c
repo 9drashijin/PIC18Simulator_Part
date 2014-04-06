@@ -7,11 +7,11 @@ char FSR[0x1000];
 //WREG 	= 0xFE8
 
 /**	
-  *	Name	: Decrement f
-  * Input 	: f{,d{,a}}
-  *	Output 	: d = 0, STORED in WREG
-  *			  d = 1, STORED in fileReg
-  *
+  *	Name		: Decrement f
+  * Input 		: f{,d{,a}}
+  *	Output 		: d = 0, STORED in WREG
+  *			 	  d = 1, STORED in fileReg
+  * Operation	: (f) – 1 → dest
 */
 
 //Decrement f (affected bit[4:0] [N,OV,Z,x,x])
